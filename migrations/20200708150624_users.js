@@ -4,7 +4,7 @@ exports.up = function (knex) {
     tbl.varchar('first_name', 30).notNullable();
     tbl.varchar('last_name', 30).notNullable();
     tbl.varchar('email', 100).notNullable();
-    tbl.integer('uuid').notNullable();
+    tbl.text('uuid').notNullable();
     tbl.varchar('role', 100).notNullable();
     tbl.boolean('is_employed', 30).notNullable();
   });
