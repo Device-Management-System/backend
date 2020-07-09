@@ -63,7 +63,7 @@ router.delete('/:id', async (req, res) => {
   try {
     const device = await db.remove(req.params.id);
     if (!device) res.status(404).json({ message: 'Device not found' });
-    else res.status(200).json({ message: 'Device successfully deleted.' });
+    else res.status(204).json({ message: 'Device successfully deleted.' });
   } catch ({ message }) {
     res.status(500).json({ message: 'Unable to delete the device.' });
   }
