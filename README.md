@@ -114,6 +114,23 @@ The _Database Schemas_ for the `users`, `devices`, `user_devices`, `device_histo
 | access_time | timestamp        |                                                     |
 | note        | varchar          |                                                     |
 
+## Available Scripts
+
+In the project directory you can run:
+
+### `yarn server`
+
+Runs the app in the development environment.<br>
+Use [http://localhost:5000](http://localhost:5000) in Postman.
+
+### `yarn reset`
+
+Will re-run the migrations and seeds in the developement environment.<br>
+
+### `yarn heroku`
+
+Will re-run the migrations and seeds in the production or staging environment.<br>
+
 ## Authors
 
 - Marina Baskova [GitHub](https://github.com/MarinaBaskova)
