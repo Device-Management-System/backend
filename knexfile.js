@@ -11,10 +11,10 @@ module.exports = {
       password: process.env.DATABASE_PASSWORD || '',
     },
     migrations: {
-      directory: './migrations',
+      directory: './data/migrations',
     },
     seeds: {
-      directory: './seeds',
+      directory: './data/seeds',
     },
     useNullAsDefault: true,
   },
@@ -27,10 +27,10 @@ module.exports = {
       max: 10,
     },
     migrations: {
-      directory: './migrations',
+      directory: './data/migrations',
     },
     seeds: {
-      directory: './seeds',
+      directory: './data/seeds',
     },
   },
 
@@ -42,10 +42,10 @@ module.exports = {
       max: 10,
     },
     migrations: {
-      directory: './migrations',
+      directory: './data/migrations',
     },
     seeds: {
-      directory: './seeds',
+      directory: './data/seeds',
     },
   },
 };
