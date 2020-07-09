@@ -24,7 +24,7 @@ Businesses lose track of who is using what IT hardware and devices, purchase cos
 
 ## API docs
 
-**folder Structure**
+**Folder Structure**
 
 - api
   - server
