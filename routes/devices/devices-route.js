@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
 
 /**
  * @desc    Get all devices
- * @route   GET /api/device
+ * @route   GET /api/devices
  */
 router.get('/', async (req, res) => {
   try {
