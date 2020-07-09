@@ -120,7 +120,7 @@ In the project directory you can run:
 
 ### `yarn start`
 
-Runs the app in the production environment.<br>
+Runs the app in the production environment.
 
 ### `yarn server`
 
@@ -129,15 +129,15 @@ Use [http://localhost:5000](http://localhost:5000) in Postman.
 
 ### `yarn reset`
 
-Will re-run the migrations and seeds in the developement environment.<br>
+Will re-run the migrations and seeds in the developement environment.
 
-### `yarn staging`
+### `yarn reset:staging`
 
-Will re-run the migrations and seeds in the staging environment.<br>
+Will re-run the migrations and seeds in the staging environment.
 
-### `yarn heroku`
+### `yarn reset:production`
 
-Will re-run the migrations and seeds in the production environment.<br>
+Will re-run the migrations and seeds in the production environment.
 
 ## Authors
 
