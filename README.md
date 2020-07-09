@@ -1,16 +1,18 @@
-# backend
+# Backend
 
-### Problem Core
+#### Deployed API : https://device-management-system.herokuapp.com/
+
+## Problem Core
 
 Businesses lose track of who is using what IT hardware and devices, purchase costs, and sim tariff details when using existing methods.
 
-### Objectives
+## Objectives
 
 1.  Save the company money through less lost hardware.
 2.  Save equipment managers time when loaning out and tracking devices
 3.  Give Accounting/Finance more insight into IT assets and capital expenses.
 
-### Solution
+## Solution
 
 **Core suggested Features**
 
@@ -24,7 +26,7 @@ Businesses lose track of who is using what IT hardware and devices, purchase cos
 
 ## API docs
 
-**Folder Structure**
+#### Table of Contents
 
 - api
   - server
@@ -45,11 +47,11 @@ Businesses lose track of who is using what IT hardware and devices, purchase cos
 - .gitignore
 - package.json
 
-#### Database Schemas
+## Database Schemas
 
 The _Database Schemas_ for the `users`, `devices`, `user_devices`, `device_history`, `requests`, `access_history`, resources are:
 
-##### Users
+#### Users
 
 | field      | data type        | metadata                                            |
 | ---------- | ---------------- | --------------------------------------------------- |
@@ -61,7 +63,7 @@ The _Database Schemas_ for the `users`, `devices`, `user_devices`, `device_histo
 | uuid       | varchar          |                                                     |
 | isEmployed | boolean          |                                                     |
 
-##### Devices
+#### Devices
 
 | field         | data type        | metadata                                            |
 | ------------- | ---------------- | --------------------------------------------------- |
@@ -75,7 +77,7 @@ The _Database Schemas_ for the `users`, `devices`, `user_devices`, `device_histo
 | active        | boolean          |                                                     |
 | created_at    | date             |                                                     |
 
-##### User Devices
+#### User Devices
 
 | field        | data type        | metadata                                            |
 | ------------ | ---------------- | --------------------------------------------------- |
@@ -84,7 +86,7 @@ The _Database Schemas_ for the `users`, `devices`, `user_devices`, `device_histo
 | device_id    | integer          | foreign key                                         |
 | check_out_at | date             |                                                     |
 
-##### Device History
+#### Device History
 
 | field         | data type        | metadata                                            |
 | ------------- | ---------------- | --------------------------------------------------- |
@@ -92,7 +94,7 @@ The _Database Schemas_ for the `users`, `devices`, `user_devices`, `device_histo
 | employee_name | string           |                                                     |
 | device_id     | integer          | foreign key                                         |
 
-##### Requests
+#### Requests
 
 | field     | data type        | metadata                                            |
 | --------- | ---------------- | --------------------------------------------------- |
@@ -102,7 +104,7 @@ The _Database Schemas_ for the `users`, `devices`, `user_devices`, `device_histo
 | note      | varchar          |                                                     |
 | status    | string           |                                                     |
 
-##### Access History
+#### Access History
 
 | field       | data type        | metadata                                            |
 | ----------- | ---------------- | --------------------------------------------------- |
@@ -111,3 +113,9 @@ The _Database Schemas_ for the `users`, `devices`, `user_devices`, `device_histo
 | device_id   | integer          | foreign key                                         |
 | access_time | timestamp        |                                                     |
 | note        | varchar          |                                                     |
+
+## Authors
+
+- Marina Baskova [GitHub](https://github.com/MarinaBaskova)
+- Guillaume Savy [GitHub](https://github.com/guillsav)
+- Tyler Foreman [GitHub](https://github.com/tjforeman)
