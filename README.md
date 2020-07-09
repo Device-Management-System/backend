@@ -118,6 +118,10 @@ The _Database Schemas_ for the `users`, `devices`, `user_devices`, `device_histo
 
 In the project directory you can run:
 
+### `yarn start`
+
+Runs the app in the production environment.<br>
+
 ### `yarn server`
 
 Runs the app in the development environment.<br>
@@ -127,9 +131,13 @@ Use [http://localhost:5000](http://localhost:5000) in Postman.
 
 Will re-run the migrations and seeds in the developement environment.<br>
 
+### `yarn staging`
+
+Will re-run the migrations and seeds in the staging environment.<br>
+
 ### `yarn heroku`
 
-Will re-run the migrations and seeds in the production or staging environment.<br>
+Will re-run the migrations and seeds in the production environment.<br>
 
 ## Authors
 
