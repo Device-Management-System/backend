@@ -18,9 +18,26 @@ exports.up = function (knex) {
       tbl.date('created_at').defaultTo(knex.fn.now());
       tbl.boolean('is_active').defaultTo(false);
       tbl.date('last_updated').defaultTo(knex.fn.now());
+    })
+    .createTable('requests', (tbl) => {
+      tbl.increments().primary();
+      tbl.integer('device_id').notNullable();
+      tbl
+        .integer('user_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('users')
+        .onUpdate('CASCADE')
+        .onDelete('RESTRICT');
+      tbl.varchar('note', 255);
+      tbl.string('status', 128).defaultTo('Pending');
     });
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists('users').dropTableIfExists('devices');
+  return knex.schema
+    .dropTableIfExists('requests')
+    .dropTableIfExists('devices')
+    .dropTableIfExists('users');
 };
