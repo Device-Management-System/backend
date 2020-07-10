@@ -106,7 +106,7 @@ const idValidation = async (req, res, next) => {
   @desc     Schema for req.params.id
   @method   GET, PUT, & DELETE
   */
-  const idParam = Joi.number().integer().min(1).max(100);
+  const idParam = Joi.number().integer().min(1).max(10000);
   try {
     const result = await idParam.validateAsync(req.params.id);
     if (result) {
