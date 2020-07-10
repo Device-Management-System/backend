@@ -1,5 +1,62 @@
 const Joi = require('@hapi/joi');
 
+// Validation to create and update user
+
+const userValidation = async (req, res, next) => {
+  /*
+  @desc     Schema for req.body
+  @method   POST
+  */
+  const createSchema = Joi.object().keys({
+    first_name: Joi.string().alphanum().min(3).max(255).required(),
+    last_name: Joi.string().alphanum().min(3).max(255).required(),
+    email: Joi.string().email().lowercase().min(3).max(255).required(),
+    uuid: Joi.string().min(3).max(128).required(),
+    role: Joi.string().min(3).max(128).required(),
+    is_employed: Joi.boolean(),
+  });
+
+  /*
+  @desc     Schema for req.body
+  @method   PUT
+  */
+  const updateSchema = Joi.object().keys({
+    first_name: Joi.string().alphanum().min(3).max(255),
+    last_name: Joi.string().alphanum().min(3).max(255),
+    email: Joi.string().email().lowercase().min(3).max(255),
+    uuid: Joi.string().min(3).max(128),
+    role: Joi.string().min(3).max(128),
+    is_employed: Joi.boolean(),
+  });
+
+  try {
+    if (req.method === 'POST') {
+      const result = await createSchema.validateAsync(req.body);
+      if (result) {
+        req.user = result;
+        next();
+      }
+    }
+
+    if (req.method === 'PUT') {
+      const result = await updateSchema.validateAsync(req.body);
+      if (result) {
+        req.update = result;
+        next();
+      }
+    }
+  } catch (error) {
+    if (error.isJoi === true) {
+      error.status = 422;
+      res.status(error.status).json({ message: error.details[0].message });
+    } else {
+      res.status(500).json({
+        message: 'Unexpected error.',
+      });
+    }
+  }
+};
+
 // Validation to create and update a device.
 const deviceValidation = async (req, res, next) => {
   /*
@@ -124,6 +181,7 @@ const idValidation = async (req, res, next) => {
 };
 
 module.exports = {
+  userValidation,
   deviceValidation,
   requestValidation,
   idValidation,
