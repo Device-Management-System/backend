@@ -9,7 +9,7 @@ const requestsRouter = require('../routes/requests/requests-route.js');
 
 const server = express();
 
-// server.use(express.json());
+server.use(express.json());
 server.use(cors());
 server.use(helmet());
 server.use(morgan('dev'));

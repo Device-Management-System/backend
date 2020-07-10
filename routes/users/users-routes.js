@@ -1,7 +1,10 @@
 const router = require('express').Router();
 const db = require('./users-model');
 
-const { idValidation } = require('../../middlewares/validation.js');
+const {
+  userValidation,
+  idValidation,
+} = require('../../middlewares/validation.js');
 
 // api/users
 
@@ -30,7 +33,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', idValidation, async (req, res) => {
   try {
-    const user = await db.findById(req.params.id);
+    const user = await db.findById(req.id);
     if (user) {
       res.status(200).json(user);
     } else {
@@ -48,16 +51,17 @@ router.get('/:id', idValidation, async (req, res) => {
  * @route   POST api/users/
  */
 
-router.post('/', async (req, res) => {
+router.post('/', userValidation, async (req, res) => {
   try {
     const newUser = await db.add(req.body);
     if (newUser) {
       res.status(201).json(newUser);
     }
   } catch (error) {
+    console.log(error.message);
     res
       .status(500)
-      .json({ message: `Your task could not be posted ${error.message}.` });
+      .json({ message: `Your user could not be posted ${error.message}.` });
   }
 });
 
@@ -66,13 +70,14 @@ router.post('/', async (req, res) => {
  * @route   PUT api/users/:id
  */
 
-router.put('/:id', idValidation, async (req, res) => {
+router.put('/:id', idValidation, userValidation, async (req, res) => {
   try {
-    const updatedUser = await db.update(req.params.id, req.body);
-    if (updatedUser) {
-      res.status(200).json(updatedUser);
-    } else {
+    const user = await db.findById(req.id);
+    if (!user) {
       res.status(404).json({ message: 'The user is not found.' });
+    } else {
+      const updatedUser = await db.update(req.id, req.update);
+      res.status(201).json(updatedUser);
     }
   } catch (error) {
     res.status(500).json({ message: `User update failed ${error.message}.` });
@@ -86,7 +91,7 @@ router.put('/:id', idValidation, async (req, res) => {
 
 router.delete('/:id', idValidation, async (req, res) => {
   try {
-    const deletedUser = await db.remove(req.params.id);
+    const deletedUser = await db.remove(req.id);
     if (deletedUser) {
       res.status(200).json({ deletedUser });
     } else {
