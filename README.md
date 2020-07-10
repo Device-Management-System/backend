@@ -36,11 +36,21 @@ Businesses lose track of who is using what IT hardware and devices, purchase cos
   - seeds
   - dbConfig
 - middlewares
+  - restricted
+  - validation
 - routes
   - users
     - users-model
     - users.spec
-    - users-router
+    - users-route
+  - devices
+    - devices-model
+    - devices.spec
+    - devices-route
+  - requests
+    - requests-model
+    - requests.spec
+    - requests-route
 - index
 - knexfile
 - .env
