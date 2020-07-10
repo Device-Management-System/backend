@@ -1,16 +1,15 @@
 const router = require('express').Router();
 const db = require('./requests-model.js');
-const validation = require('../../middlewares/requests-validation.js');
-const { findById } = require('./requests-model.js');
+const { requestValidation } = require('../../middlewares/validation.js');
 
 /**
  * @desc    Add a new request in the database
  * @route   POST /api/requests
  */
-router.post('/', validation, async (req, res) => {
+router.post('/', requestValidation, async (req, res) => {
   try {
-    const requests = await db.add(req.body);
-    res.status(201).json(requests);
+    const request = await db.add(req.request);
+    res.status(201).json(request);
   } catch ({ message }) {
     res.status(500).json({ message: 'Unable to create the request.' });
   }

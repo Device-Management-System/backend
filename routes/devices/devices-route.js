@@ -1,14 +1,14 @@
 const router = require('express').Router();
 const db = require('./devices-model.js');
-const validation = require('../../middlewares/devices-validation.js');
+const { deviceValidation } = require('../../middlewares/validation.js');
 
 /**
  * @desc    Add a new device to the database
  * @route   POST /api/devices/
  */
-router.post('/', validation, async (req, res) => {
+router.post('/', deviceValidation, async (req, res) => {
   try {
-    const device = await db.add(req.body);
+    const device = await db.add(req.device);
     res.status(200).json(device);
   } catch ({ message }) {
     res.status(500).json({ message: 'Unable to create device the device' });
