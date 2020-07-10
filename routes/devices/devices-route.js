@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const db = require('./devices-model.js');
+const validation = require('../../middlewares/devices-validation.js');
 
 /**
  * @desc    Add a new device to the database
  * @route   POST /api/devices/
  */
-router.post('/', async (req, res) => {
+router.post('/', validation, async (req, res) => {
   try {
     const device = await db.add(req.body);
     res.status(200).json(device);
@@ -46,6 +47,9 @@ router.get('/:id', async (req, res) => {
  * @route   PUT /api/devices/:id
  */
 router.put('/:id', async (req, res) => {
+  if (!req.body) {
+    res.status(400).json({ message: 'Unable to update device.' });
+  }
   try {
     const device = await db.update(req.params.id, req.body);
     if (!device) res.status(404).json({ message: 'Device not found' });
