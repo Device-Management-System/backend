@@ -32,7 +32,7 @@ const add = async (newUser) => {
   }
 };
 
-const update = async (infoToUpdate, id) => {
+const update = async (id, infoToUpdate) => {
   const editedUser = await db('users').where({ id }).update(infoToUpdate);
   if (editedUser) {
     const updatedUser = await findById(id);

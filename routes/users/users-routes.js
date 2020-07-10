@@ -21,4 +21,80 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+ * @desc    Get User by ID
+ * @route   GET api/users/:id
+ */
+
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await db.findById(req.params.id);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: `User not found!` });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: `Unable to retrieve the user ${error.message}` });
+  }
+});
+
+/**
+ * @desc    Add a new user to database
+ * @route   POST api/users/
+ */
+
+router.post('/', async (req, res) => {
+  try {
+    const newUser = await db.add(req.body);
+    if (newUser) {
+      res.status(201).json(newUser);
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: `Your task could not be posted ${error.message}.` });
+  }
+});
+
+/**
+ * @desc    Update a single user
+ * @route   PUT api/users/:id
+ */
+
+router.put('/:id', async (req, res) => {
+  try {
+    const updatedUser = await db.update(req.params.id, req.body);
+    if (updatedUser) {
+      res.status(200).json(updatedUser);
+    } else {
+      res.status(404).json({ message: 'The user is not found.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: `User update failed ${error.message}.` });
+  }
+});
+
+/**
+ * @desc    Delete a single user
+ * @route   Delete api/users/:id
+ */
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const deletedUser = await db.remove(req.params.id);
+    if (deletedUser) {
+      res.status(200).json({ deletedUser });
+    } else {
+      res.status(404).json({ message: 'The user is not found.' });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: `User could not be deleted: ${error.message}.`,
+    });
+  }
+});
+
 module.exports = router;
