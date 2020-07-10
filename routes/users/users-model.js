@@ -1,14 +1,5 @@
 const db = require('../../data/dbConfig');
 
-module.exports = {
-  findAll,
-  findById,
-  findByEmail,
-  add,
-  update,
-  remove,
-};
-
 const findAll = async () => {
   const allUsers = await db('users');
   return allUsers;
@@ -48,4 +39,13 @@ const remove = async (id) => {
       return userToDelete;
     }
   }
+};
+
+module.exports = {
+  findAll,
+  findById,
+  findByEmail,
+  add,
+  update,
+  remove,
 };

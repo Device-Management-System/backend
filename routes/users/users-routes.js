@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const db = require('./users-model');
 
+const { idValidation } = require('../../middlewares/validation.js');
+
 // api/users
 
 /**
@@ -26,7 +28,7 @@ router.get('/', async (req, res) => {
  * @route   GET api/users/:id
  */
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', idValidation, async (req, res) => {
   try {
     const user = await db.findById(req.params.id);
     if (user) {
@@ -64,7 +66,7 @@ router.post('/', async (req, res) => {
  * @route   PUT api/users/:id
  */
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', idValidation, async (req, res) => {
   try {
     const updatedUser = await db.update(req.params.id, req.body);
     if (updatedUser) {
@@ -82,7 +84,7 @@ router.put('/:id', async (req, res) => {
  * @route   Delete api/users/:id
  */
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', idValidation, async (req, res) => {
   try {
     const deletedUser = await db.remove(req.params.id);
     if (deletedUser) {
