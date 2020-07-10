@@ -9,38 +9,38 @@ module.exports = {
   remove,
 };
 
-async function findAll() {
+const findAll = async () => {
   const allUsers = await db('users');
   return allUsers;
-}
+};
 
-async function findById(id) {
+const findById = async (id) => {
   const user = await db('users').where({ id }).first();
   return user;
-}
+};
 
-async function findByEmail(email) {
+const findByEmail = async (email) => {
   const user = await db('users').where({ email }).first();
   return user;
-}
+};
 
-async function add(newUser) {
+const add = async (newUser) => {
   const [id] = await db('users').insert(newUser, 'id');
   if (id) {
     const user = await findById(id);
     return user;
   }
-}
+};
 
-async function update(infoToUpdate, id) {
+const update = async (infoToUpdate, id) => {
   const editedUser = await db('users').where({ id }).update(infoToUpdate);
   if (editedUser) {
     const updatedUser = await findById(id);
     return updatedUser;
   }
-}
+};
 
-async function remove(id) {
+const remove = async (id) => {
   const userToDelete = await findById(id);
   if (userToDelete) {
     const numOfDeletedRecords = await db('users').where({ id }).del();
@@ -48,4 +48,4 @@ async function remove(id) {
       return userToDelete;
     }
   }
-}
+};

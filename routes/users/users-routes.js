@@ -3,7 +3,11 @@ const db = require('./users-model');
 
 // api/users
 
-// Get All Users
+/**
+ * @desc    Get All Users
+ * @route   GET api/users
+ */
+
 router.get('/', async (req, res) => {
   try {
     const allUsers = await db.findAll();
