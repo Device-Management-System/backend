@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const db = require('./requests-model.js');
-const { requestValidation } = require('../../middlewares/validation.js');
+const {
+  requestValidation,
+  idValidation,
+} = require('../../middlewares/validation.js');
 
 /**
  * @desc    Add a new request in the database
@@ -34,9 +37,9 @@ router.get('/', async (req, res) => {
  * @desc    Get a single request from the database
  * @route   GET /api/requests/:id
  */
-router.get('/', async (req, res) => {
+router.get('/:id', idValidation, async (req, res) => {
   try {
-    const request = await db.findById(req.params.id);
+    const request = await db.findById(req.id);
     if (!request) res.status(404).json({ message: 'Request not found.' });
     else res.status(200).json(request);
   } catch ({ message }) {
@@ -50,15 +53,12 @@ router.get('/', async (req, res) => {
  * @desc    Update a single request
  * @route   PUT /api/requests/:id
  */
-router.put('/:id', async (req, res) => {
-  if (!req.body) {
-    res.status(400).json({ message: 'Unable to update request.' });
-  }
+router.put('/:id', idValidation, requestValidation, async (req, res) => {
   try {
-    const request = await db.findById(req.params.id);
+    const request = await db.findById(req.id);
     if (!request) res.status(404).json({ message: 'Request not found.' });
     else {
-      const update = await db.update(req.params.id, req.body);
+      const update = await db.update(req.id, req.update);
       res.status(201).json(update);
     }
   } catch ({ message }) {
@@ -66,13 +66,13 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', idValidation, async (req, res) => {
   try {
-    const request = await findById(req.params.id);
+    const request = await findById(req.id);
     if (!request) res.status(404).json({ message: 'Request not found.' });
     else {
-      await db.remove(req.params.id);
-      res.status(204).json({ message: 'Request successfully deleted.' });
+      await db.remove(req.id);
+      res.status(200).json({ message: 'Request successfully deleted.' });
     }
   } catch ({ message }) {
     res.status(500).json({ message: 'Unable to delete request.' });

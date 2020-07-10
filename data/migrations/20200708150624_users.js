@@ -37,7 +37,7 @@ exports.up = function (knex) {
         .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('RESTRICT');
-      tbl.varchar('note', 255).notNullable();
+      tbl.varchar('note', 500).notNullable();
       tbl.string('status', 128).defaultTo('Pending');
     });
 };
