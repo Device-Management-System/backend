@@ -21,7 +21,14 @@ exports.up = function (knex) {
     })
     .createTable('requests', (tbl) => {
       tbl.increments().primary();
-      tbl.integer('device_id').notNullable();
+      tbl
+        .integer('device_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('devices')
+        .onUpdate('CASCADE')
+        .onDelete('RESTRICT');
       tbl
         .integer('user_id')
         .unsigned()
@@ -30,7 +37,7 @@ exports.up = function (knex) {
         .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('RESTRICT');
-      tbl.varchar('note', 255);
+      tbl.varchar('note', 255).notNullable();
       tbl.string('status', 128).defaultTo('Pending');
     });
 };
