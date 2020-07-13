@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const db = require('./devices-model.js');
+const restricted = require('../../middlewares/restricted.js');
 const {
   deviceValidation,
   idValidation,
@@ -9,7 +10,7 @@ const {
  * @desc    Add a new device to the database
  * @route   POST /api/devices/
  */
-router.post('/', deviceValidation, async (req, res) => {
+router.post('/', restricted, deviceValidation, async (req, res) => {
   try {
     const device = await db.add(req.device);
     res.status(201).json(device);
