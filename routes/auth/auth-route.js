@@ -12,7 +12,7 @@ router.post('/', restricted, async (req, res) => {
     };
     if (user) {
       const logIn = await db.findUserByEmail(user.email);
-      console.log(logIn.length);
+      console.log('logIn length', logIn.length);
       if (!logIn.length) {
         const newUser = await db.addUser(user);
         res.status(201).json(newUser);
