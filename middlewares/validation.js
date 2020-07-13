@@ -157,6 +157,29 @@ const requestValidation = async (req, res, next) => {
   }
 };
 
+// Validation for uuid parameters
+const uuidValidation = async (req, res, next) => {
+  /*
+  @desc     Schema for req.params.id
+  @method   GET, PUT, & DELETE
+*/
+  const uuidParam = Joi.string().uuid();
+  try {
+    const result = await uuidParam.validateAsync(req.params.id);
+    if (result) {
+      req.uuid = result;
+      next();
+    }
+  } catch (error) {
+    if (error.isJoi === true) {
+      error.status = 400;
+      res.status(error.status).json({ message: error.details[0].message });
+    } else {
+      res.status(500).json({ message: 'Unexpected error.' });
+    }
+  }
+};
+
 // Validation for id parameters
 const idValidation = async (req, res, next) => {
   /*
@@ -184,5 +207,6 @@ module.exports = {
   userValidation,
   deviceValidation,
   requestValidation,
+  uuidValidation,
   idValidation,
 };
