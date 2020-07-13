@@ -8,8 +8,7 @@ const userValidation = async (req, res, next) => {
   @method   POST
   */
   const createSchema = Joi.object().keys({
-    first_name: Joi.string().alphanum().min(3).max(255).required(),
-    last_name: Joi.string().alphanum().min(3).max(255).required(),
+    name: Joi.string().alphanum().min(3).max(255).required(),
     email: Joi.string().email().lowercase().min(3).max(255).required(),
     uuid: Joi.string().min(3).max(128).required(),
     role: Joi.string().min(3).max(128).required(),
@@ -21,8 +20,7 @@ const userValidation = async (req, res, next) => {
   @method   PUT
   */
   const updateSchema = Joi.object().keys({
-    first_name: Joi.string().alphanum().min(3).max(255),
-    last_name: Joi.string().alphanum().min(3).max(255),
+    name: Joi.string().alphanum().min(3).max(255),
     email: Joi.string().email().lowercase().min(3).max(255),
     uuid: Joi.string().min(3).max(128),
     role: Joi.string().min(3).max(128),
