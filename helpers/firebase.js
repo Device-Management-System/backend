@@ -1,4 +1,5 @@
 // Initializer to for firebase auth
+admin = require('firebase-admin');
 module.exports = admin.initializeApp({
   credential: admin.credential.cert({
     type: 'service_account',
