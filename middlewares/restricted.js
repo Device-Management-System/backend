@@ -1,8 +1,7 @@
 const firebase = require('../helpers/firebase');
 
 module.exports = (req, res, next) => {
-  console.log(req.body);
-  const idToken = req.body.token;
+  const idToken = req.headers.authorization;
   if (idToken) {
     firebase
       .auth()
