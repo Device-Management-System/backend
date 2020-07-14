@@ -13,7 +13,7 @@ const {
  * @desc    Add a new device to the database
  * @route   POST /api/devices/
  */
-router.post('/', deviceValidation, async (req, res) => {
+router.post('/', restricted, deviceValidation, async (req, res) => {
   try {
     const device = await db.add(req.device);
     res.status(201).json(device);
@@ -26,7 +26,7 @@ router.post('/', deviceValidation, async (req, res) => {
  * @desc    Get all devices
  * @route   GET /api/devices
  */
-router.get('/', async (req, res) => {
+router.get('/', restricted, async (req, res) => {
   try {
     const devices = await db.findAll();
     res.status(200).json(devices);
@@ -78,7 +78,7 @@ router.get('/user-devices/:id', restricted, async (req, res) => {
  * @desc    Get a single device by id
  * @route   GET /api/devices/:id
  */
-router.get('/:id', idValidation, async (req, res) => {
+router.get('/:id', restricted, idValidation, async (req, res) => {
   try {
     const device = await db.findById(req.id);
     if (device) res.status(200).json(device);
@@ -92,24 +92,30 @@ router.get('/:id', idValidation, async (req, res) => {
  * @desc    Update a single device
  * @route   PUT /api/devices/:id
  */
-router.put('/:id', idValidation, deviceValidation, async (req, res) => {
-  try {
-    const device = await db.findById(req.id);
-    if (!device) res.status(404).json({ message: 'Device not found.' });
-    else {
-      const device = await db.update(req.id, req.update);
-      res.status(201).json(device);
+router.put(
+  '/:id',
+  restricted,
+  idValidation,
+  deviceValidation,
+  async (req, res) => {
+    try {
+      const device = await db.findById(req.id);
+      if (!device) res.status(404).json({ message: 'Device not found.' });
+      else {
+        const device = await db.update(req.id, req.update);
+        res.status(201).json(device);
+      }
+    } catch ({ message }) {
+      res.status(500).json({ message: 'Unable to update the device.' });
     }
-  } catch ({ message }) {
-    res.status(500).json({ message: 'Unable to update the device.' });
   }
-});
+);
 
 /**
  * @desc    Remove a single device
  * @route   DELETE /api/devices/:id
  */
-router.delete('/:id', idValidation, async (req, res) => {
+router.delete('/:id', restricted, idValidation, async (req, res) => {
   try {
     const device = await db.remove(req.id);
     if (!device) res.status(404).json({ message: 'Device not found' });
