@@ -9,6 +9,14 @@ const findById = async (id) => {
   const user = await db('users').where({ id }).first();
   return user;
 };
+const findByUUID = async (uuid) => {
+  const userID = await db('users')
+    .select({ userID: 'id' })
+    .where({ uuid: uuid })
+    .first();
+
+  return userID;
+};
 
 const findByEmail = async (email) => {
   const user = await db('users').where({ email }).first();
@@ -44,6 +52,7 @@ const remove = async (id) => {
 module.exports = {
   findAll,
   findById,
+  findByUUID,
   findByEmail,
   add,
   update,

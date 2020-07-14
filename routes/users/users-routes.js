@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const db = require('./users-model');
-const restricted = require('../../middlewares/restricted');
 
 const {
   userValidation,
@@ -52,19 +51,19 @@ router.get('/:id', idValidation, async (req, res) => {
  * @route   POST api/users/
  */
 
-router.post('/', userValidation, async (req, res) => {
-  try {
-    const newUser = await db.add(req.body);
-    if (newUser) {
-      res.status(201).json(newUser);
-    }
-  } catch (error) {
-    console.log(error.message);
-    res
-      .status(500)
-      .json({ message: `Your user could not be posted ${error.message}.` });
-  }
-});
+// router.post('/', userValidation, async (req, res) => {
+//   try {
+//     const newUser = await db.add(req.body);
+//     if (newUser) {
+//       res.status(201).json(newUser);
+//     }
+//   } catch (error) {
+//     console.log(error.message);
+//     res
+//       .status(500)
+//       .json({ message: `Your user could not be posted ${error.message}.` });
+//   }
+// });
 
 /**
  * @desc    Update a single user
