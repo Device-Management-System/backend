@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
 });
 
 /**
- * @desc    Get all users devices
+ * @desc    Get all user's devices
  * @route   GET /api/devices
  */
 router.get('/user-devices', restricted, async (req, res) => {
@@ -51,6 +51,26 @@ router.get('/user-devices', restricted, async (req, res) => {
     }
   } catch ({ message }) {
     res.status(500).json({ message: 'Unable to retrieve devices.' });
+  }
+});
+
+/**
+ * @desc    Get user's device
+ * @route   GET /api/devices
+ */
+router.get('/user-devices/:id', restricted, async (req, res) => {
+  const userUID = req.headers.decodedToken.uid;
+  const { deviceID } = req.params;
+  try {
+    const { userID } = await userDB.findByUUID(userUID);
+    if (userID) {
+      const userDevice = await db.findByIdAndUserID(userID, deviceID);
+      res.status(200).json(userDevice);
+    } else {
+      res.status(404).json({ message: `Device not found!` });
+    }
+  } catch ({ message }) {
+    res.status(500).json({ message: 'Unable to retrieve device.' });
   }
 });
 
