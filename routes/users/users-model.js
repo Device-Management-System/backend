@@ -13,6 +13,7 @@ const findByUUID = async (uuid) => {
   const userID = await db('users')
     .select({ userID: 'id' })
     .where({ uuid: uuid })
+    .andWhere({ is_admin: true })
     .first();
 
   return userID;

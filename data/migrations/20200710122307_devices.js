@@ -19,7 +19,6 @@ exports.up = function (knex) {
     tbl
       .integer('assign_to_user_id')
       .unsigned()
-      .notNullable()
       .references('id')
       .inTable('users')
       .onUpdate('CASCADE')

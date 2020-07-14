@@ -15,23 +15,18 @@ const authorized = require('../../middlewares/Authorized.js');
  * @route   POST /api/devices/
  * @access  Private, Admin
  */
-router.post(
-  '/',
-  restricted,
-  authorized('admin'),
-  deviceValidation,
-  async (req, res) => {
-    try {
-      const { userID } = await userDB.findByUUID(req.headers.decodedToken.uid);
-      if (userID) {
-        const device = await db.add(req.device, userID);
-        res.status(201).json(device);
-      }
-    } catch ({ message }) {
-      res.status(500).json({ message: 'Unable to create device the device' });
+router.post('/', restricted, deviceValidation, async (req, res) => {
+  try {
+    const { userID } = await userDB.findByUUID(req.headers.decodedToken.uid);
+
+    if (userID) {
+      const device = await db.add(req.device, userID);
+      res.status(201).json(device);
     }
+  } catch ({ message }) {
+    res.status(500).json({ message: 'Unable to create device the device' });
   }
-);
+});
 
 /**
  * @desc    Get all devices
