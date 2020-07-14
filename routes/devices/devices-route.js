@@ -1,9 +1,13 @@
 const router = require('express').Router();
 const db = require('./devices-model.js');
+const userDB = require('../users/users-model.js');
+const restricted = require('../../middlewares/restricted');
 const {
   deviceValidation,
   idValidation,
 } = require('../../middlewares/validation.js');
+
+// /api/devices
 
 /**
  * @desc    Add a new device to the database
@@ -26,6 +30,25 @@ router.get('/', async (req, res) => {
   try {
     const devices = await db.findAll();
     res.status(200).json(devices);
+  } catch ({ message }) {
+    res.status(500).json({ message: 'Unable to retrieve devices.' });
+  }
+});
+
+/**
+ * @desc    Get all users devices
+ * @route   GET /api/devices
+ */
+router.get('/user-devices', restricted, async (req, res) => {
+  const userUID = req.headers.decodedToken.uid;
+  try {
+    const { userID } = await userDB.findByUUID(userUID);
+    if (userID) {
+      const userDevices = await db.findALLByUserID(userID);
+      res.status(200).json(userDevices);
+    } else {
+      res.status(404).json({ message: `Devices not found!` });
+    }
   } catch ({ message }) {
     res.status(500).json({ message: 'Unable to retrieve devices.' });
   }
