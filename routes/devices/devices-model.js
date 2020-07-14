@@ -22,9 +22,12 @@ const findByIdAndUserID = async (userID, taskID) => {
   return userDevice;
 };
 
-const add = async (data) => {
-  const [id] = await db('devices').insert(data, 'id');
-  return findById(id);
+const add = async (data, userID) => {
+  const [id] = await db('devices').insert({ ...data, user_id: userID }, 'id');
+  if (id) {
+    const createdDevice = await findById(id);
+    return createdDevice;
+  }
 };
 
 const update = async (id, update) => {

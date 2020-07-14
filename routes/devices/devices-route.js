@@ -15,8 +15,11 @@ const {
  */
 router.post('/', restricted, deviceValidation, async (req, res) => {
   try {
-    const device = await db.add(req.device);
-    res.status(201).json(device);
+    const { userID } = await userDB.findByUUID(req.headers.decodedToken.uid);
+    if (userID) {
+      const device = await db.add(req.device, userID);
+      res.status(201).json(device);
+    }
   } catch ({ message }) {
     res.status(500).json({ message: 'Unable to create device the device' });
   }
@@ -55,16 +58,15 @@ router.get('/user-devices', restricted, async (req, res) => {
 });
 
 /**
- * @desc    Get user's device
+ * @desc    Get user's device by id
  * @route   GET /api/devices
  */
 router.get('/user-devices/:id', restricted, async (req, res) => {
   const userUID = req.headers.decodedToken.uid;
-  const { deviceID } = req.params;
   try {
     const { userID } = await userDB.findByUUID(userUID);
     if (userID) {
-      const userDevice = await db.findByIdAndUserID(userID, deviceID);
+      const userDevice = await db.findByIdAndUserID(userID, req.params.id);
       res.status(200).json(userDevice);
     } else {
       res.status(404).json({ message: `Device not found!` });
