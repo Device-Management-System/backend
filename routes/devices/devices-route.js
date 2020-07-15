@@ -17,11 +17,13 @@ const authorized = require('../../middlewares/Authorized.js');
  */
 router.post('/', restricted, deviceValidation, async (req, res) => {
   try {
-    const { userID } = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
 
-    if (userID) {
-      const device = await db.add(req.device, userID);
+    if (foundUser && foundUser.is_admin) {
+      const device = await db.add(req.device);
       res.status(201).json(device);
+    } else {
+      res.status(403).json({ message: 'Access denied!' });
     }
   } catch ({ message }) {
     res.status(500).json({ message: 'Unable to create device the device' });
@@ -33,10 +35,13 @@ router.post('/', restricted, deviceValidation, async (req, res) => {
  * @route   GET /api/devices
  * @access  Private, Admin
  */
-router.get('/', restricted, authorized('admin'), async (req, res) => {
+router.get('/', restricted, async (req, res) => {
   try {
-    const devices = await db.findAll();
-    res.status(200).json(devices);
+    const { userID } = await userDB.findByUUID(req.headers.decodedToken.uid);
+    if (userID) {
+      const devices = await db.findAll();
+      res.status(200).json(devices);
+    }
   } catch ({ message }) {
     res.status(500).json({ message: 'Unable to retrieve devices.' });
   }
@@ -85,24 +90,18 @@ router.get('/user-devices/:id', restricted, async (req, res) => {
  * @route   GET /api/devices/:id
  * @access  Private, Admin, User
  */
-router.get(
-  '/:id',
-  restricted,
-  authorized('admin'),
-  idValidation,
-  async (req, res) => {
-    try {
-      const device = await db.findById(req.id);
-      if (device) {
-        res.status(200).json(device);
-      } else {
-        res.status(404).json({ message: `Device not found!` });
-      }
-    } catch ({ message }) {
-      res.status(500).json({ message: 'Unable to retrieve the device.' });
+router.get('/:id', restricted, idValidation, async (req, res) => {
+  try {
+    const device = await db.findById(req.id);
+    if (device) {
+      res.status(200).json(device);
+    } else {
+      res.status(404).json({ message: `Device not found!` });
     }
+  } catch ({ message }) {
+    res.status(500).json({ message: 'Unable to retrieve the device.' });
   }
-);
+});
 
 /**
  * @desc    Update a single device
@@ -112,7 +111,6 @@ router.get(
 router.put(
   '/:id',
   restricted,
-  authorized('admin'),
   idValidation,
   deviceValidation,
   async (req, res) => {
@@ -135,20 +133,14 @@ router.put(
  * @route   DELETE /api/devices/:id
  * @access  Private, Admin
  */
-router.delete(
-  '/:id',
-  restricted,
-  authorized('admin'),
-  idValidation,
-  async (req, res) => {
-    try {
-      const device = await db.remove(req.id);
-      if (!device) res.status(404).json({ message: 'Device not found' });
-      else res.status(200).json({ message: 'Device successfully deleted.' });
-    } catch ({ message }) {
-      res.status(500).json({ message: 'Unable to delete the device.' });
-    }
+router.delete('/:id', restricted, idValidation, async (req, res) => {
+  try {
+    const device = await db.remove(req.id);
+    if (!device) res.status(404).json({ message: 'Device not found' });
+    else res.status(200).json({ message: 'Device successfully deleted.' });
+  } catch ({ message }) {
+    res.status(500).json({ message: 'Unable to delete the device.' });
   }
-);
+});
 
 module.exports = router;
