@@ -10,12 +10,8 @@ const findById = async (id) => {
   return user;
 };
 const findByUUID = async (uuid) => {
-  const userID = await db('users')
-    .select({ userID: 'id' })
-    .where({ uuid: uuid })
-    .first();
-
-  return userID;
+  const user = await db('users').where({ uuid: uuid }).first();
+  return user;
 };
 
 const findByEmail = async (email) => {

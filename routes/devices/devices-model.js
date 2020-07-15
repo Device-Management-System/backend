@@ -15,15 +15,15 @@ const findALLByUserID = async (userID) => {
   return userDevices;
 };
 
-const findByIdAndUserID = async (userID, taskID) => {
+const findByIdAndUserID = async (userID, deviceID) => {
   const userDevice = await db('devices')
     .where({ 'devices.user_id': userID })
-    .andWhere({ 'devices.id': taskID });
+    .andWhere({ 'devices.id': deviceID });
   return userDevice;
 };
 
-const add = async (data, userID) => {
-  const [id] = await db('devices').insert({ ...data, user_id: userID }, 'id');
+const add = async (data) => {
+  const [id] = await db('devices').insert({ ...data }, 'id');
   if (id) {
     const createdDevice = await findById(id);
     return createdDevice;
