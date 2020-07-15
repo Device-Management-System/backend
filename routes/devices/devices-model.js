@@ -15,10 +15,10 @@ const findALLByUserID = async (userID) => {
   return userDevices;
 };
 
-const findByIdAndUserID = async (userID, taskID) => {
+const findByIdAndUserID = async (userID, deviceID) => {
   const userDevice = await db('devices')
     .where({ 'devices.user_id': userID })
-    .andWhere({ 'devices.id': taskID });
+    .andWhere({ 'devices.id': deviceID });
   return userDevice;
 };
 

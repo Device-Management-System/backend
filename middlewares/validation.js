@@ -14,6 +14,7 @@ const userValidation = async (req, res, next) => {
     uuid: Joi.string().min(3).max(128).required(),
     role: Joi.string().min(3).max(128).required(),
     is_employed: Joi.boolean(),
+    is_admin: Joi.boolean(),
   });
 
   /*
@@ -27,6 +28,7 @@ const userValidation = async (req, res, next) => {
     uuid: Joi.string().min(3).max(128),
     role: Joi.string().min(3).max(128),
     is_employed: Joi.boolean(),
+    is_admin: Joi.boolean(),
   });
 
   try {
@@ -68,6 +70,7 @@ const deviceValidation = async (req, res, next) => {
     serial_number: Joi.string().alphanum().min(3).max(255).required(),
     os: Joi.string().min(3).max(128).required(),
     brand: Joi.string().min(3).max(128).required(),
+    user_id: Joi.number(),
   });
 
   /*
@@ -79,6 +82,7 @@ const deviceValidation = async (req, res, next) => {
     serial_number: Joi.string().alphanum().min(3).max(255),
     os: Joi.string().min(3).max(128),
     brand: Joi.string().min(3).max(128),
+    user_id: Joi.number(),
   });
 
   try {
