@@ -93,7 +93,7 @@ router.get('/user-devices/:id', restricted, async (req, res) => {
 /**
  * @desc    Get a single device by id
  * @route   GET /api/devices/:id
- * @access  Private, Admin, User
+ * @access  Private, Admin
  */
 router.get('/:id', restricted, idValidation, async (req, res) => {
   try {
