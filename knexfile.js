@@ -1,4 +1,3 @@
-// Update with your config settings.
 require('dotenv').config();
 
 module.exports = {
@@ -9,6 +8,7 @@ module.exports = {
       database: process.env.DATABASE_NAME,
       user: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD || '',
+      // port: 5433,
     },
     migrations: {
       directory: './data/migrations',

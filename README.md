@@ -137,6 +137,10 @@ Runs the app in the production environment.
 Runs the app in the development environment.<br>
 Use [http://localhost:5000](http://localhost:5000) in Postman.
 
+### `yarn rollback`
+
+Will rollback the migrations in the development environment.
+
 ### `yarn reset`
 
 Will re-run the migrations and seeds in the developement environment.

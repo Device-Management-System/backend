@@ -8,6 +8,13 @@ exports.up = function (knex) {
     tbl.date('created_at').defaultTo(knex.fn.now());
     tbl.boolean('is_active').defaultTo(false);
     tbl.date('last_updated').defaultTo(knex.fn.now());
+    tbl
+      .integer('user_id')
+      .unsigned()
+      .references('id')
+      .inTable('users')
+      .onUpdate('CASCADE')
+      .onDelete('RESTRICT');
   });
 };
 
