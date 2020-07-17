@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const db = require('./requests-model.js');
+const userDB = require('../users/users-model.js');
 const restricted = require('../../middlewares/restricted.js');
-const authorized = require('../../middlewares/authorized.js');
+
 const {
   requestValidation,
   idValidation,
@@ -14,8 +15,15 @@ const {
  */
 router.post('/', restricted, requestValidation, async (req, res) => {
   try {
-    const request = await db.add(req.request);
-    res.status(201).json(request);
+    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    if (foundUser) {
+      const request = await db.add(req.request);
+      res.status(201).json(request);
+    } else {
+      res
+        .status(404)
+        .json({ message: `The was an error while creating request.` });
+    }
   } catch ({ message }) {
     res.status(500).json({ message: 'Unable to create the request.' });
   }
@@ -26,10 +34,15 @@ router.post('/', restricted, requestValidation, async (req, res) => {
  * @route   GET /api/requests
  * @access  Private, Admin
  */
-router.get('/', restricted, authorized('admin'), async (req, res) => {
+router.get('/', restricted, async (req, res) => {
   try {
-    const requests = await db.findAll();
-    res.status(200).json(requests);
+    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    if (foundUser && foundUser.is_admin) {
+      const requests = await db.findAll();
+      res.status(200).json(requests);
+    } else {
+      res.status(403).json({ message: 'Access denied!' });
+    }
   } catch ({ message }) {
     res
       .status(500)
@@ -42,23 +55,21 @@ router.get('/', restricted, authorized('admin'), async (req, res) => {
  * @route   GET /api/requests/:id
  * @access  Private, Admin, User
  */
-router.get(
-  '/:id',
-  restricted,
-  authorized('admin'),
-  idValidation,
-  async (req, res) => {
-    try {
+router.get('/:id', restricted, idValidation, async (req, res) => {
+  try {
+    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    if (foundUser && foundUser.is_admin) {
       const request = await db.findById(req.id);
-      if (!request) res.status(404).json({ message: 'Request not found.' });
-      else res.status(200).json(request);
-    } catch ({ message }) {
-      res
-        .status(500)
-        .json({ message: 'Unable to retrieve the request from the server.' });
+      res.status(200).json(request);
+    } else {
+      res.status(403).json({ message: 'Access denied!' });
     }
+  } catch ({ message }) {
+    res
+      .status(500)
+      .json({ message: 'Unable to retrieve the request from the server.' });
   }
-);
+});
 
 /**
  * @desc    Update a single request
@@ -72,11 +83,15 @@ router.put(
   requestValidation,
   async (req, res) => {
     try {
-      const request = await db.findById(req.id);
-      if (!request) res.status(404).json({ message: 'Request not found.' });
-      else {
-        const update = await db.update(req.id, req.update);
-        res.status(201).json(update);
+      const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+      if (foundUser) {
+        const requestToUpdate = await db.findById(req.id);
+        if (requestToUpdate) {
+          const updatedRequest = await db.update(req.id, req.update);
+          res.status(201).json(updatedRequest);
+        } else {
+          res.status(404).json({ message: 'Request not found.' });
+        }
       }
     } catch ({ message }) {
       res.status(500).json({ message: 'Unable to Update the request.' });
@@ -91,11 +106,15 @@ router.put(
  */
 router.delete('/:id', restricted, idValidation, async (req, res) => {
   try {
-    const request = await findById(req.id);
-    if (!request) res.status(404).json({ message: 'Request not found.' });
-    else {
-      await db.remove(req.id);
-      res.status(200).json({ message: 'Request successfully deleted.' });
+    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    if (foundUser) {
+      const requestToDelete = await findById(req.id);
+      if (requestToDelete) {
+        const deletedRequest = await db.remove(req.id);
+        res.status(200).json({ message: 'Request successfully deleted.' });
+      } else {
+        res.status(404).json({ message: 'Request not found.' });
+      }
     }
   } catch ({ message }) {
     res.status(500).json({ message: 'Unable to delete request.' });
