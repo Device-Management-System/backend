@@ -54,9 +54,8 @@ router.get('/', restricted, async (req, res) => {
  * @route   GET /api/devices
  */
 router.get('/user-devices', restricted, async (req, res) => {
-  const userUID = req.headers.decodedToken.uid;
   try {
-    const foundUser = await userDB.findByUUID(userUID);
+    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
     if (foundUser) {
       const userDevices = await db.findALLByUserID(foundUser.id);
       res.status(200).json(userDevices);

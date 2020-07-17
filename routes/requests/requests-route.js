@@ -72,6 +72,14 @@ router.get('/:id', restricted, idValidation, async (req, res) => {
 });
 
 /**
+ * @desc    Get all User's request from the database
+ * @route   GET /api/requests/user/:id
+ * @access  Private, Admin, User
+ */
+
+// Todo: Will need to implement a route to see all requests for a single user
+
+/**
  * @desc    Update a single request
  * @route   PUT /api/requests/:id
  * @access  Private, User
