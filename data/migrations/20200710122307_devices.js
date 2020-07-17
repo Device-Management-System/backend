@@ -15,6 +15,13 @@ exports.up = function (knex) {
       .inTable('users')
       .onUpdate('CASCADE')
       .onDelete('RESTRICT');
+    tbl
+      .integer('organization_id')
+      .unsigned()
+      .references('id')
+      .inTable('organization')
+      .onUpdate('CASCADE')
+      .onDelete('RESTRICT');
   });
 };
 
