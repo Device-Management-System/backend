@@ -41,6 +41,7 @@ const userValidation = async (req, res, next) => {
     role: Joi.string().min(3).max(128).required(),
     is_employed: Joi.boolean(),
     is_admin: Joi.boolean(),
+    organization_id: Joi.number(),
   });
 
   /*
@@ -54,6 +55,7 @@ const userValidation = async (req, res, next) => {
     role: Joi.string().min(3).max(128),
     is_employed: Joi.boolean(),
     is_admin: Joi.boolean(),
+    organization_id: Joi.number(),
   });
 
   try {

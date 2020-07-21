@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const db = require('./organization-model.js');
+const userDB = require('../users/users-model.js');
 const restricted = require('../../middlewares/restricted');
 const {
   idValidation,
