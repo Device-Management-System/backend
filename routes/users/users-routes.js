@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const db = require('./users-model');
-
+const userDB = require('../users/users-model.js');
+const restricted = require('../../middlewares/restricted');
 const {
   userValidation,
   idValidation,
@@ -13,7 +14,7 @@ const {
  * @route   GET api/users
  */
 
-router.get('/', async (req, res) => {
+router.get('/', restricted, async (req, res) => {
   try {
     const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
     if (foundUser && foundUser.is_admin) {
@@ -32,7 +33,7 @@ router.get('/', async (req, res) => {
  * @route   GET api/users/:id
  */
 
-router.get('/:id', idValidation, async (req, res) => {
+router.get('/:id', restricted, idValidation, async (req, res) => {
   try {
     const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
     if (foundUser && foundUser.is_admin) {
@@ -57,31 +58,37 @@ router.get('/:id', idValidation, async (req, res) => {
  * @route   PUT api/users/:id
  */
 
-router.put('/:id', idValidation, userValidation, async (req, res) => {
-  try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
-    if (foundUser && foundUser.is_admin) {
-      const usertoUpdate = await db.findById(req.id);
-      if (usertoUpdate) {
-        const updatedUser = await db.update(req.id, req.update);
-        res.status(201).json(updatedUser);
+router.put(
+  '/:id',
+  restricted,
+  idValidation,
+  userValidation,
+  async (req, res) => {
+    try {
+      const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+      if (foundUser && foundUser.is_admin) {
+        const usertoUpdate = await db.findById(req.id);
+        if (usertoUpdate) {
+          const updatedUser = await db.update(req.id, req.update);
+          res.status(201).json(updatedUser);
+        } else {
+          res.status(404).json({ message: 'The user is not found.' });
+        }
       } else {
-        res.status(404).json({ message: 'The user is not found.' });
+        res.status(404).json({ message: `User not found!` });
       }
-    } else {
-      res.status(404).json({ message: `User not found!` });
+    } catch (error) {
+      res.status(500).json({ message: `User update failed ${error.message}.` });
     }
-  } catch (error) {
-    res.status(500).json({ message: `User update failed ${error.message}.` });
   }
-});
+);
 
 /**
  * @desc    Delete a single user
  * @route   Delete api/users/:id
  */
 
-router.delete('/:id', idValidation, async (req, res) => {
+router.delete('/:id', restricted, idValidation, async (req, res) => {
   try {
     const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
     if (foundUser && foundUser.is_admin) {
