@@ -1,7 +1,34 @@
 const Joi = require('@hapi/joi');
 
-// Validation to create and update user
+// Validation for Register
+const registerValidation = async (req, res, next) => {
+  /*
+  @desc     Schema for req.body
+  @method   POST
+  */
+  const createSchma = Joi.object().keys({
+    name: Joi.string().min(3).max(30),
+  });
 
+  try {
+    const result = await createSchma.validate(req.body);
+    if (result) {
+      req.name = req.body.name;
+      next();
+    }
+  } catch ({ message }) {
+    if (error.isJoi === true) {
+      error.status = 422;
+      res.status(error.status).json({ message: error.details[0].message });
+    } else {
+      res.status(500).json({
+        message: 'Unexpected error.',
+      });
+    }
+  }
+};
+
+// Validation to create and update user
 const userValidation = async (req, res, next) => {
   /*
   @desc     Schema for req.body
@@ -208,6 +235,7 @@ const idValidation = async (req, res, next) => {
 };
 
 module.exports = {
+  registerValidation,
   userValidation,
   deviceValidation,
   requestValidation,
