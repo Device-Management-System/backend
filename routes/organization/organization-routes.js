@@ -37,7 +37,11 @@ router.post('/', restricted, organizationValidation, async (req, res) => {
 router.get('/:id', restricted, idValidation, async (req, res) => {
   try {
     const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
-    if (foundUser && foundUser.is_admin) {
+    if (
+      foundUser &&
+      foundUser.is_admin &&
+      foundUser.organization_id === req.id
+    ) {
       const organization = await db.findById(req.id);
       res.status(200).json(organization);
     } else {
@@ -61,7 +65,11 @@ router.put(
   async (req, res) => {
     try {
       const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
-      if (foundUser && foundUser.is_admin) {
+      if (
+        foundUser &&
+        foundUser.is_admin &&
+        foundUser.organization_id === req.id
+      ) {
         const updatedOrg = await db.update(req.id, req.update);
         res.status(201).json(updatedOrg);
       } else {
@@ -81,7 +89,11 @@ router.put(
 router.delete('/:id', restricted, idValidation, async (req, res) => {
   try {
     const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
-    if (foundUser && foundUser.is_admin) {
+    if (
+      foundUser &&
+      foundUser.is_admin &&
+      foundUser.organization_id === req.id
+    ) {
       const deletedOrg = await db.remove(req.id);
       if (deletedOrg) {
         res.status(200).json({ message: 'Organization successfully deleted.' });
