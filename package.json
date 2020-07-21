@@ -8,7 +8,7 @@
     "test": "jest --watch --verbose",
     "server": "nodemon index.js",
     "rollback": "npx knex migrate:rollback",
-    "reset": "npx knex migrate:rollback && npx knex migrate:latest && npx knex seed:run",
+    "reset": "npx knex migrate:rollback && npx knex migrate:latest && npx knex seed:run && clear && nodemon index.js",
     "reset:staging": "npx heroku run knex migrate:rollback -a device-management-staging && npx heroku run knex migrate:latest -a device-management-staging && npx heroku run knex seed:run -a device-management-staging",
     "reset:production": "npx heroku run knex migrate:rollback -a device-management-system && npx heroku run knex migrate:latest -a device-management-system && npx heroku run knex seed:run -a device-management-system"
   },
