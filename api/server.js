@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const usersRouter = require('../routes/users/users-routes');
 const devicesRouter = require('../routes/devices/devices-route.js');
 const requestsRouter = require('../routes/requests/requests-route.js');
-const organizationRouter = require('../routes/organization/organization-routes');
+const organizationRouter = require('../routes/organization/organization-route');
 const authRouter = require('../routes/auth/auth-route.js');
 
 const server = express();

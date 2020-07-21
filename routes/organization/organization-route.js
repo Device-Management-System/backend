@@ -107,3 +107,5 @@ router.delete('/:id', restricted, idValidation, async (req, res) => {
     res.status(500).json({ message: 'Unable to delete organization.' });
   }
 });
+
+module.exports = router;
