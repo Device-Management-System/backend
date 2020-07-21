@@ -75,7 +75,7 @@ router.put(
 
 /**
  * @desc    Remove organization
- * @route   DELETE /api/devices/:id
+ * @route   DELETE /api/organization/:id
  * @access  Private, Admin
  */
 router.delete('/:id', restricted, idValidation, async (req, res) => {
