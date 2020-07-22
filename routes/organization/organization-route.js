@@ -53,6 +53,16 @@ router.get('/:id', restricted, idValidation, async (req, res) => {
   }
 });
 
+// To-do get all users for organization
+
+/**
+ * @desc    Get all organization's users
+ * @route   GET /api/organization/users
+ * @access  Private, Admin
+ */
+
+// users_org_id matches the org_id
+
 /**
  * @desc    Update a organization
  * @route   PUT /api/organization/:id

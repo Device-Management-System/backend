@@ -5,6 +5,11 @@ const findById = async (id) => {
   return organization;
 };
 
+const findAllOrgUsers = async (id) => {
+  const organizationUsers = await db('users').where({ organization_id: id });
+  return organizationUsers;
+};
+
 const add = async (newOrg) => {
   const [id] = await db('organization').insert(newOrg, 'id');
   if (id) {
