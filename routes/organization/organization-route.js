@@ -53,8 +53,6 @@ router.get('/:id', restricted, idValidation, async (req, res) => {
   }
 });
 
-// To-do get all users for organization
-
 /**
  * @desc    Get all organization's users
  * @route   GET /api/organization/:id/users
