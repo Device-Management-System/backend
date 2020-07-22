@@ -10,9 +10,24 @@ const findById = async (id) => {
   return device;
 };
 
+const findALLByUserID = async (userID) => {
+  const userDevices = await db('devices').where({ 'devices.user_id': userID });
+  return userDevices;
+};
+
+const findByIdAndUserID = async (userID, deviceID) => {
+  const userDevice = await db('devices')
+    .where({ 'devices.user_id': userID })
+    .andWhere({ 'devices.id': deviceID });
+  return userDevice;
+};
+
 const add = async (data) => {
-  const [id] = await db('devices').insert(data, 'id');
-  return findById(id);
+  const [id] = await db('devices').insert({ ...data }, 'id');
+  if (id) {
+    const createdDevice = await findById(id);
+    return createdDevice;
+  }
 };
 
 const update = async (id, update) => {
@@ -27,6 +42,8 @@ const remove = async (id) => {
 module.exports = {
   findAll,
   findById,
+  findALLByUserID,
+  findByIdAndUserID,
   add,
   update,
   remove,
