@@ -57,11 +57,29 @@ router.get('/:id', restricted, idValidation, async (req, res) => {
 
 /**
  * @desc    Get all organization's users
- * @route   GET /api/organization/users
+ * @route   GET /api/organization/:id/users
  * @access  Private, Admin
  */
 
 // users_org_id matches the org_id
+
+router.get('/:id/users', restricted, idValidation, async (req, res) => {
+  try {
+    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    if (
+      foundUser &&
+      foundUser.is_admin &&
+      foundUser.organization_id === req.id
+    ) {
+      const orgUsers = await db.findAllOrgUsers(req.id);
+      res.status(200).json(orgUsers);
+    } else {
+      res.status(403).json({ message: 'Access denied!' });
+    }
+  } catch ({ message }) {
+    res.status(500).json({ message: 'Unable to retrieve the organization.' });
+  }
+});
 
 /**
  * @desc    Update a organization

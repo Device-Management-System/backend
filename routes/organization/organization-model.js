@@ -6,7 +6,17 @@ const findById = async (id) => {
 };
 
 const findAllOrgUsers = async (id) => {
-  const organizationUsers = await db('users').where({ organization_id: id });
+  const organizationUsers = await db('users')
+    .select({
+      id: 'id',
+      name: 'name',
+      email: 'email',
+      role: 'role',
+      is_employed: 'is_employed',
+      is_admin: 'is_admin',
+      organization_id: 'organization_id',
+    })
+    .where({ organization_id: id });
   return organizationUsers;
 };
 
@@ -38,6 +48,7 @@ const remove = async (id) => {
 
 module.exports = {
   findById,
+  findAllOrgUsers,
   add,
   update,
   remove,
