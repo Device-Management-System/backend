@@ -77,7 +77,21 @@ router.get('/:id', restricted, idValidation, async (req, res) => {
  * @access  Private, Admin, User
  */
 
-// Todo: Will need to implement a route to see all requests for a single user
+router.get('/user/:id', restricted, idValidation, async (req, res) => {
+  try {
+    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    if (foundUser) {
+      const allUserRequests = await db.findAllByUserId(req.id);
+      res.status(200).json(allUserRequests);
+    } else {
+      res.status(403).json({ message: 'Access denied!' });
+    }
+  } catch ({ message }) {
+    res.status(500).json({
+      message: 'Unable to retrieve all user requests from the server.',
+    });
+  }
+});
 
 /**
  * @desc    Update a single request

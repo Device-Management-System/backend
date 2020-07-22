@@ -8,6 +8,11 @@ const findById = async (id) => {
   return await db('requests').where({ id }).first();
 };
 
+const findAllByUserId = async (id) => {
+  const allUserRequests = await db('requests').where({ user_id: id });
+  return allUserRequests;
+};
+
 const add = async (data) => {
   const [id] = await db('requests').insert(data, 'id');
   return findById(id);
@@ -25,6 +30,7 @@ const remove = async (id) => {
 module.exports = {
   findAll,
   findById,
+  findAllByUserId,
   add,
   update,
   remove,
