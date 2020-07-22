@@ -95,8 +95,8 @@ const deviceValidation = async (req, res, next) => {
   const createSchema = Joi.object().keys({
     device_model: Joi.string().alphanum().min(3).max(255).required(),
     serial_number: Joi.string().alphanum().min(3).max(255).required(),
-    os: Joi.string().min(3).max(128).required(),
-    brand: Joi.string().min(3).max(128).required(),
+    os: Joi.string().min(2).max(128).required(),
+    brand: Joi.string().min(2).max(128).required(),
     is_active: Joi.boolean(),
     user_id: Joi.number(),
   });
@@ -108,8 +108,8 @@ const deviceValidation = async (req, res, next) => {
   const updateSchema = Joi.object().keys({
     device_model: Joi.string().alphanum().min(3).max(255),
     serial_number: Joi.string().alphanum().min(3).max(255),
-    os: Joi.string().min(3).max(128),
-    brand: Joi.string().min(3).max(128),
+    os: Joi.string().min(2).max(128),
+    brand: Joi.string().min(2).max(128),
     is_active: Joi.boolean(),
     user_id: Joi.number(),
   });
