@@ -25,7 +25,7 @@ server.use(function (req, res, next) {
 });
 server.use(
   cors({
-    origin: 'http://localhost:3000’, // restrict calls to those this address',
+    origin: `${process.env.FE_URL}`, // restrict calls to those this address,
     methods: ['GET', 'PUT', 'POST'],
     allowedHeaders:
       'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Content-Type, Authorization',
