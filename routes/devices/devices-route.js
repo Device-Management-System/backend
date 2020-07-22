@@ -26,7 +26,7 @@ router.post('/', restricted, deviceValidation, async (req, res) => {
       res.status(403).json({ message: 'Access denied!' });
     }
   } catch ({ message }) {
-    res.status(500).json({ message: 'Unable to create device the device' });
+    res.status(500).json({ message: 'Unable to create device' });
   }
 });
 

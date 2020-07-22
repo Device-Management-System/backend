@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const usersRouter = require('../routes/users/users-routes');
 const devicesRouter = require('../routes/devices/devices-route.js');
 const requestsRouter = require('../routes/requests/requests-route.js');
+const organizationRouter = require('../routes/organization/organization-route');
 const authRouter = require('../routes/auth/auth-route.js');
 
 const server = express();
@@ -39,6 +40,7 @@ server.get('/', async (req, res) => {
 server.use('/api/users', usersRouter);
 server.use('/api/devices', devicesRouter);
 server.use('/api/requests', requestsRouter);
+server.use('/api/organization', organizationRouter);
 server.use('/api/auth', authRouter);
 
 module.exports = server;

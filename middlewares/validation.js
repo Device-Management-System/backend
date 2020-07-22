@@ -41,6 +41,7 @@ const userValidation = async (req, res, next) => {
     role: Joi.string().min(3).max(128).required(),
     is_employed: Joi.boolean(),
     is_admin: Joi.boolean(),
+    organization_id: Joi.number(),
   });
 
   /*
@@ -54,6 +55,7 @@ const userValidation = async (req, res, next) => {
     role: Joi.string().min(3).max(128),
     is_employed: Joi.boolean(),
     is_admin: Joi.boolean(),
+    organization_id: Joi.number(),
   });
 
   try {
@@ -188,6 +190,51 @@ const requestValidation = async (req, res, next) => {
   }
 };
 
+const organizationValidation = async (req, res, next) => {
+  /*
+  @desc     Schema for req.body
+  @method   POST
+  */
+  const createSchema = Joi.object().keys({
+    name: Joi.string().min(3).max(128).required(),
+  });
+
+  /*
+  @desc     Schema for req.body
+  @method   PUT
+  */
+  const updateSchema = Joi.object().keys({
+    name: Joi.string().min(3).max(128).required(),
+  });
+
+  try {
+    if (req.method === 'POST') {
+      const result = await createSchema.validateAsync(req.body);
+      if (result) {
+        req.org = result;
+        next();
+      }
+    }
+
+    if (req.method === 'PUT') {
+      const result = await updateSchema.validateAsync(req.body);
+      if (result) {
+        req.update = result;
+        next();
+      }
+    }
+  } catch (error) {
+    if (error.isJoi === true) {
+      error.status = 422;
+      res.status(error.status).json({ message: error.details[0].message });
+    } else {
+      res.status(500).json({
+        message: 'Unexpected error.',
+      });
+    }
+  }
+};
+
 // Validation for uuid parameters
 const uuidValidation = async (req, res, next) => {
   /*
@@ -239,6 +286,7 @@ module.exports = {
   userValidation,
   deviceValidation,
   requestValidation,
+  organizationValidation,
   uuidValidation,
   idValidation,
 };
