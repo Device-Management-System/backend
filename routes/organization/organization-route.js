@@ -61,8 +61,6 @@ router.get('/:id', restricted, idValidation, async (req, res) => {
  * @access  Private, Admin
  */
 
-// users_org_id matches the org_id
-
 router.get('/:id/users', restricted, idValidation, async (req, res) => {
   try {
     const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
@@ -77,7 +75,9 @@ router.get('/:id/users', restricted, idValidation, async (req, res) => {
       res.status(403).json({ message: 'Access denied!' });
     }
   } catch ({ message }) {
-    res.status(500).json({ message: 'Unable to retrieve the organization.' });
+    res
+      .status(500)
+      .json({ message: 'Unable to retrieve the organization users.' });
   }
 });
 
