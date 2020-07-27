@@ -11,7 +11,7 @@ router.post(
   '/',
   restricted,
   registerValidation,
-  organizationValidation,
+
   async (req, res) => {
     try {
       const data = req.headers.decodedToken;
@@ -34,14 +34,15 @@ router.post(
           // No Org or User is found in DB
           if (!foundUser && !existedOrg) {
             // 2. Create Org
-            // To-do: Check the req for org data
-            const createdOrg = await orgDB.add(req.body.orgData);
+            const createdOrg = await orgDB.add(req.body);
             // 3.  Assign User to Org and Make User Admin
-            user['organization_id'] = createdOrg.id;
-            user['is_admin'] = true;
-            // 4. Add New User
-            const newUser = await db.addUser(user);
-            res.status(201).json(newUser);
+            if (createdOrg) {
+              user['organization_id'] = createdOrg.id;
+              user['is_admin'] = true;
+              // 4. Add New User
+              const newUser = await db.addUser(user);
+              res.status(201).json(newUser);
+            }
 
             // Org found in DB but User is not
           } else if (!foundUser && existedOrg) {
