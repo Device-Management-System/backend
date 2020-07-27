@@ -12,6 +12,7 @@ const {
 /**
  * @desc    Get All Users
  * @route   GET api/users
+ * @access  Private, Admin
  */
 
 router.get('/', restricted, async (req, res) => {
@@ -31,12 +32,13 @@ router.get('/', restricted, async (req, res) => {
 /**
  * @desc    Get User by ID
  * @route   GET api/users/:id
+ * @access  Private, Admin, User
  */
 
 router.get('/:id', restricted, idValidation, async (req, res) => {
   try {
     const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
-    if (foundUser && foundUser.is_admin) {
+    if ((foundUser && foundUser.is_admin) || foundUser.id === req.id) {
       const user = await db.findById(req.id);
       if (user) {
         res.status(200).json(user);
@@ -56,6 +58,7 @@ router.get('/:id', restricted, idValidation, async (req, res) => {
 /**
  * @desc    Update a single user
  * @route   PUT api/users/:id
+ * @access  Private, Admin
  */
 
 router.put(
@@ -86,6 +89,7 @@ router.put(
 /**
  * @desc    Delete a single user
  * @route   Delete api/users/:id
+ * @access  Private, Admin
  */
 
 router.delete('/:id', restricted, idValidation, async (req, res) => {

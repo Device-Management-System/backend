@@ -26,8 +26,8 @@ router.post(
           db.findUserByEmail(user.email),
           orgDB.findByName(req.body.name),
         ]).then(async (values) => {
-          // [ { status: 'fulfilled', value: 'User' },{ status: 'fulfilled', value: 'Org' } ]
-          // if one of them has status rejected then value of it will be undifined
+          // Values:  [ { status: 'fulfilled', value: 'User' },{ status: 'fulfilled', value: 'Org' } ]
+          // if one of them has status rejected then the value of it will be undifined
           const foundUser = values[0].value;
           const existedOrg = values[1].value;
 
@@ -44,7 +44,7 @@ router.post(
               res.status(201).json(newUser);
             }
 
-            // Org found in DB but User is not
+            // Org found in DB but User is not -> Then need to Provide Organization Name, to assign User to it
           } else if (!foundUser && existedOrg) {
             user['organization_id'] = existedOrg.id;
             const newUser = await db.addUser(user);
@@ -65,5 +65,3 @@ router.post(
 );
 
 module.exports = router;
-
-// Notes: User in db? return the user : create org-> create user -> make user Admin
