@@ -5,6 +5,11 @@ const findById = async (id) => {
   return organization;
 };
 
+const findByName = async (name) => {
+  const organization = await db('organization').where({ name }).first();
+  return organization;
+};
+
 const findAllOrgUsers = async (id) => {
   const organizationUsers = await db('users')
     .select({
@@ -48,6 +53,7 @@ const remove = async (id) => {
 
 module.exports = {
   findById,
+  findByName,
   findAllOrgUsers,
   add,
   update,
