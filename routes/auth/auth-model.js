@@ -1,13 +1,21 @@
 const db = require('../../data/dbConfig');
 
-const findUserByEmail = async (userEmail) => {
-  const user = await db('users').where({ email: userEmail });
+const findById = async (id) => {
+  const user = await db('users').where({ id }).first();
   return user;
 };
 
-const addUser = async (userInfo) => {
-  const newUser = await db('users').insert(userInfo);
-  return newUser;
+const findUserByEmail = async (userEmail) => {
+  const user = await db('users').where({ email: userEmail }).first();
+  return user;
+};
+
+const addUser = async (newUser) => {
+  const [id] = await db('users').insert(newUser, 'id');
+  if (id) {
+    const user = await findById(id);
+    return user;
+  }
 };
 
 module.exports = {
