@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
+const { jwtCheck } = require('../middlewares/auth0');
 const usersRouter = require('../routes/users/users-routes');
 const devicesRouter = require('../routes/devices/devices-route.js');
 const requestsRouter = require('../routes/requests/requests-route.js');
@@ -15,6 +16,7 @@ server.use(express.json());
 server.use(cors());
 server.use(helmet());
 server.use(morgan('dev'));
+server.use(jwtCheck);
 
 // server.use(function (req, res, next) {
 //   res.header('Access-Control-Allow-Origin', '*');
