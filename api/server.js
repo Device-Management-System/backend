@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
+const { jwtCheck } = require('../middlewares/auth0');
 const usersRouter = require('../routes/users/users-routes');
 const devicesRouter = require('../routes/devices/devices-route.js');
 const requestsRouter = require('../routes/requests/requests-route.js');
@@ -15,23 +16,24 @@ server.use(express.json());
 server.use(cors());
 server.use(helmet());
 server.use(morgan('dev'));
+server.use(jwtCheck);
 
-server.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
-});
-server.use(
-  cors({
-    origin: `${process.env.FE_URL}`, // restrict calls to those this address,
-    methods: ['GET', 'PUT', 'POST'],
-    allowedHeaders:
-      'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Content-Type, Authorization',
-  })
-);
+// server.use(function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept'
+//   );
+//   next();
+// });
+// server.use(
+//   cors({
+//     origin: `${process.env.FE_URL}`, // restrict calls to those this address,
+//     methods: ['GET', 'PUT', 'POST'],
+//     allowedHeaders:
+//       'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Content-Type, Authorization',
+//   })
+// );
 
 server.get('/', async (req, res) => {
   res.status(200).json({ api: 'server is working' });

@@ -8,6 +8,8 @@ const {
   idValidation,
 } = require('../../middlewares/validation.js');
 
+// To-Do: add org id check to post, get all, get by id and delete routes
+
 /**
  * @desc    Add a new request in the database
  * @route   POST /api/requests
@@ -31,7 +33,7 @@ router.post('/', restricted, requestValidation, async (req, res) => {
 
 /**
  * @desc    Get all the requests in the database
- * @route   GET /api/requests
+ * @route   GET /api/requests/
  * @access  Private, Admin
  */
 router.get('/', restricted, async (req, res) => {

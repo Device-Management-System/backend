@@ -1,7 +1,7 @@
 const db = require('../../data/dbConfig.js');
 
 const findAll = async () => {
-  const devices = await db('devices');
+  const devices = await db('devices').where({});
   return devices;
 };
 

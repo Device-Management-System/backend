@@ -10,6 +10,8 @@ const {
 
 // /api/devices
 
+// To-Do: add org id check to post, get all, get by id and delete routes
+
 /**
  * @desc    Add a new device to the database
  * @route   POST /api/devices/
