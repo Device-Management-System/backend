@@ -33,7 +33,7 @@ router.post('/', restricted, requestValidation, async (req, res) => {
 
 /**
  * @desc    Get all the requests in the database
- * @route   GET /api/requests
+ * @route   GET /api/requests/
  * @access  Private, Admin
  */
 router.get('/', restricted, async (req, res) => {

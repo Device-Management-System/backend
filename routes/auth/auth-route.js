@@ -7,6 +7,7 @@ const {
   organizationValidation,
 } = require('../../middlewares/validation');
 
+// Todo: Refactor for Auth0
 router.post(
   '/',
   restricted,
@@ -18,7 +19,6 @@ router.post(
       const user = {
         email: data.email,
         uuid: data.user_id,
-        // name: req.name ? req.name : data.name,
         name: data.name,
       };
       if (user) {
