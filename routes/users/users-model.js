@@ -5,12 +5,8 @@ const findAll = async () => {
   return allUsers;
 };
 
-const findById = async (id) => {
+const findByID = async (id) => {
   const user = await db('users').where({ id }).first();
-  return user;
-};
-const findByUUID = async (uuid) => {
-  const user = await db('users').where({ uuid: uuid }).first();
   return user;
 };
 
@@ -22,7 +18,7 @@ const findByEmail = async (email) => {
 const add = async (newUser) => {
   const [id] = await db('users').insert(newUser, 'id');
   if (id) {
-    const user = await findById(id);
+    const user = await findByID(id);
     return user;
   }
 };
@@ -30,13 +26,13 @@ const add = async (newUser) => {
 const update = async (id, infoToUpdate) => {
   const editedUser = await db('users').where({ id }).update(infoToUpdate);
   if (editedUser) {
-    const updatedUser = await findById(id);
+    const updatedUser = await findByID(id);
     return updatedUser;
   }
 };
 
 const remove = async (id) => {
-  const userToDelete = await findById(id);
+  const userToDelete = await findByID(id);
   if (userToDelete) {
     const numOfDeletedRecords = await db('users').where({ id }).del();
     if (numOfDeletedRecords) {
@@ -47,8 +43,7 @@ const remove = async (id) => {
 
 module.exports = {
   findAll,
-  findById,
-  findByUUID,
+  findByID,
   findByEmail,
   add,
   update,

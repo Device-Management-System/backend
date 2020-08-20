@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const db = require('./devices-model.js');
 const userDB = require('../users/users-model.js');
-const restricted = require('../../middlewares/restricted');
+const {
+  tokenVerification: restricted,
+} = require('../../middlewares/restricted');
 const {
   deviceValidation,
   idValidation,
@@ -19,8 +21,7 @@ const {
  */
 router.post('/', restricted, deviceValidation, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
-
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser && foundUser.is_admin) {
       const device = await db.add(req.device);
       res.status(201).json(device);
@@ -39,7 +40,7 @@ router.post('/', restricted, deviceValidation, async (req, res) => {
  */
 router.get('/', restricted, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser && foundUser.is_admin) {
       const devices = await db.findAll();
       res.status(200).json(devices);
@@ -57,7 +58,7 @@ router.get('/', restricted, async (req, res) => {
  */
 router.get('/user-devices', restricted, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser) {
       const userDevices = await db.findALLByUserID(foundUser.id);
       res.status(200).json(userDevices);
@@ -76,7 +77,7 @@ router.get('/user-devices', restricted, async (req, res) => {
 router.get('/user-devices/:id', restricted, async (req, res) => {
   const userUID = req.headers.decodedToken.uid;
   try {
-    const foundUser = await userDB.findByUUID(userUID);
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser) {
       const userDevice = await db.findByIdAndUserID(
         foundUser.id,
@@ -98,7 +99,7 @@ router.get('/user-devices/:id', restricted, async (req, res) => {
  */
 router.get('/:id', restricted, idValidation, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser && foundUser.is_admin) {
       const device = await db.findById(req.id);
       res.status(200).json(device);
@@ -122,7 +123,7 @@ router.put(
   deviceValidation,
   async (req, res) => {
     try {
-      const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+      const foundUser = await userDB.findByID(req.userID);
       if (foundUser && foundUser.is_admin) {
         const updatedDevice = await db.update(req.id, req.update);
         res.status(201).json(updatedDevice);
@@ -142,7 +143,7 @@ router.put(
  */
 router.delete('/:id', restricted, idValidation, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser && foundUser.is_admin) {
       const device = await db.remove(req.id);
       if (device) {

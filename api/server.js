@@ -3,7 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
-const { jwtCheck } = require('../middlewares/auth0');
+const jwtCheck = require('../middlewares/auth0');
 const usersRouter = require('../routes/users/users-routes');
 const devicesRouter = require('../routes/devices/devices-route.js');
 const requestsRouter = require('../routes/requests/requests-route.js');
@@ -16,7 +16,6 @@ server.use(express.json());
 server.use(cors());
 server.use(helmet());
 server.use(morgan('dev'));
-server.use(jwtCheck);
 
 // server.use(function (req, res, next) {
 //   res.header('Access-Control-Allow-Origin', '*');
@@ -39,10 +38,12 @@ server.get('/', async (req, res) => {
   res.status(200).json({ api: 'server is working' });
 });
 
-server.use('/api/users', usersRouter);
-server.use('/api/devices', devicesRouter);
-server.use('/api/requests', requestsRouter);
-server.use('/api/organization', organizationRouter);
-server.use('/api/auth', authRouter);
+// server.use(jwtCheck);
+
+server.use('/api/users', jwtCheck, usersRouter);
+server.use('/api/devices', jwtCheck, devicesRouter);
+server.use('/api/requests', jwtCheck, requestsRouter);
+server.use('/api/organization', jwtCheck, organizationRouter);
+server.use('/api/auth', jwtCheck, authRouter);
 
 module.exports = server;

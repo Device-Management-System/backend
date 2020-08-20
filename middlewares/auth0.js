@@ -1,7 +1,7 @@
 let jwt = require('express-jwt');
 let jwks = require('jwks-rsa');
 
-let jwtCheck = jwt({
+module.exports = jwt({
   secret: jwks.expressJwtSecret({
     cache: true,
     rateLimit: true,
@@ -12,7 +12,3 @@ let jwtCheck = jwt({
   issuer: process.env.AUTH_0_ISSUER,
   algorithms: [process.env.AUTH_0_ALGO],
 });
-
-module.exports = {
-  jwtCheck,
-};
