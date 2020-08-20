@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const db = require('./requests-model.js');
 const userDB = require('../users/users-model.js');
-const restricted = require('../../middlewares/restricted.js');
+const {
+  tokenVerification: restricted,
+} = require('../../middlewares/restricted.js');
 
 const {
   requestValidation,
@@ -17,7 +19,7 @@ const {
  */
 router.post('/', restricted, requestValidation, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser) {
       const request = await db.add(req.request);
       res.status(201).json(request);
@@ -38,7 +40,7 @@ router.post('/', restricted, requestValidation, async (req, res) => {
  */
 router.get('/', restricted, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser && foundUser.is_admin) {
       const requests = await db.findAll();
       res.status(200).json(requests);
@@ -59,7 +61,7 @@ router.get('/', restricted, async (req, res) => {
  */
 router.get('/:id', restricted, idValidation, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser && foundUser.is_admin) {
       const request = await db.findById(req.id);
       res.status(200).json(request);
@@ -81,7 +83,7 @@ router.get('/:id', restricted, idValidation, async (req, res) => {
 
 router.get('/user/:id', restricted, idValidation, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser) {
       const allUserRequests = await db.findAllByUserId(req.id);
       res.status(200).json(allUserRequests);
@@ -107,7 +109,7 @@ router.put(
   requestValidation,
   async (req, res) => {
     try {
-      const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+      const foundUser = await userDB.findByID(req.userID);
       if (foundUser) {
         const requestToUpdate = await db.findById(req.id);
         if (requestToUpdate) {
@@ -130,7 +132,7 @@ router.put(
  */
 router.delete('/:id', restricted, idValidation, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser) {
       const requestToDelete = await findById(req.id);
       if (requestToDelete) {

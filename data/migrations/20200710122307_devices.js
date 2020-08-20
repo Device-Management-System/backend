@@ -9,8 +9,7 @@ exports.up = function (knex) {
     tbl.boolean('is_active').defaultTo(false);
     tbl.date('last_updated').defaultTo(knex.fn.now());
     tbl
-      .integer('user_id')
-      .unsigned()
+      .text('user_id')
       .references('id')
       .inTable('users')
       .onUpdate('CASCADE')

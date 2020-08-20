@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const db = require('./auth-model');
 const orgDB = require('../organization/organization-model');
-const restricted = require('../../middlewares/restricted');
+const {
+  tokenVerification: restricted,
+} = require('../../middlewares/restricted');
 // const {
 //   registerValidation,
 //   organizationValidation,
@@ -18,9 +20,22 @@ router.post(
 
   async (req, res) => {
     try {
-      const tokeUserData = req.headers.decodedToken;
-      console.log('DATA FROM TOKEN => ', tokeUserData);
-      res.status(200);
+      const user = {
+        id: req.body.id,
+        email: req.body.email,
+        name: req.body.name,
+      };
+      if (user) {
+        const foundUser = await db.findUserByID(user.id);
+        if (foundUser) {
+          res.status(202).json(foundUser);
+        } else {
+          const newUser = await db.addUser(user);
+          res.status(201).json(newUser);
+        }
+      } else {
+        res.status(404).json('Error finding provided user ');
+      }
     } catch (error) {
       console.log(error.message);
       res

@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const db = require('./organization-model.js');
 const userDB = require('../users/users-model.js');
-const restricted = require('../../middlewares/restricted');
+const {
+  tokenVerification: restricted,
+} = require('../../middlewares/restricted');
 const {
   idValidation,
   organizationValidation,
@@ -17,7 +19,7 @@ const {
 
 router.post('/', restricted, organizationValidation, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (foundUser && foundUser.is_admin) {
       const organization = await db.add(req.org);
       res.status(201).json(organization);
@@ -37,7 +39,7 @@ router.post('/', restricted, organizationValidation, async (req, res) => {
 
 router.get('/:id', restricted, idValidation, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (
       foundUser &&
       foundUser.is_admin &&
@@ -61,7 +63,7 @@ router.get('/:id', restricted, idValidation, async (req, res) => {
 
 router.get('/:id/users', restricted, idValidation, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (
       foundUser &&
       foundUser.is_admin &&
@@ -91,7 +93,7 @@ router.put(
   organizationValidation,
   async (req, res) => {
     try {
-      const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+      const foundUser = await userDB.findByID(req.userID);
       if (
         foundUser &&
         foundUser.is_admin &&
@@ -115,7 +117,7 @@ router.put(
  */
 router.delete('/:id', restricted, idValidation, async (req, res) => {
   try {
-    const foundUser = await userDB.findByUUID(req.headers.decodedToken.uid);
+    const foundUser = await userDB.findByID(req.userID);
     if (
       foundUser &&
       foundUser.is_admin &&
