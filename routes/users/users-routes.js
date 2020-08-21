@@ -58,7 +58,7 @@ router.get('/:id', tokenVerification, idValidation, async (req, res) => {
 /**
  * @desc    Update a single user
  * @route   PUT api/users/:id
- * @access  Private, Admin
+ * @access
  */
 
 router.put(
@@ -67,16 +67,17 @@ router.put(
   idValidation,
   userValidation,
   async (req, res) => {
+    const userToUpdate = {
+      first_name: req.update.firstname,
+      last_name: req.update.lastname,
+      role: req.update.role,
+      is_completed: true,
+    };
     try {
-      const foundUser = await userDB.findByID(req.userID);
-      if (foundUser && foundUser.is_admin) {
-        const usertoUpdate = await db.findById(req.id);
-        if (usertoUpdate) {
-          const updatedUser = await db.update(req.id, req.update);
-          res.status(201).json(updatedUser);
-        } else {
-          res.status(404).json({ message: 'The user is not found.' });
-        }
+      const foundUser = await userDB.findByID(req.id);
+      if (foundUser) {
+        const updatedUser = await db.update(req.id, userToUpdate);
+        res.status(201).json(updatedUser);
       } else {
         res.status(404).json({ message: `User not found!` });
       }

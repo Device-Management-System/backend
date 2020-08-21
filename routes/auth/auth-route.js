@@ -4,10 +4,7 @@ const orgDB = require('../organization/organization-model');
 const {
   tokenVerification: restricted,
 } = require('../../middlewares/restricted');
-// const {
-//   registerValidation,
-//   organizationValidation,
-// } = require('../../middlewares/validation');
+// const { registerValidation } = require('../../middlewares/validation');
 
 /*
  * @desc
@@ -23,7 +20,6 @@ router.post(
       const user = {
         id: req.body.id,
         email: req.body.email,
-        name: req.body.name,
       };
       if (user) {
         const foundUser = await db.findUserByID(user.id);
