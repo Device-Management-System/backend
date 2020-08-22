@@ -35,10 +35,11 @@ const userValidation = async (req, res, next) => {
   @method   POST
   */
   const createSchema = Joi.object().keys({
-    name: Joi.string().alphanum().min(3).max(255).required(),
+    id: Joi.string().min(3).max(255).required(),
+    firstname: Joi.string().min(3).max(128),
+    lastname: Joi.string().min(3).max(128),
     email: Joi.string().email().lowercase().min(3).max(255).required(),
-    uuid: Joi.string().min(3).max(128).required(),
-    role: Joi.string().min(3).max(128).required(),
+    role: Joi.string().min(3).max(128),
     is_employed: Joi.boolean(),
     is_admin: Joi.boolean(),
     organization_id: Joi.number(),
@@ -49,9 +50,10 @@ const userValidation = async (req, res, next) => {
   @method   PUT
   */
   const updateSchema = Joi.object().keys({
-    name: Joi.string().alphanum().min(3).max(255),
+    id: Joi.string().min(3).max(255),
+    firstname: Joi.string().min(3).max(128),
+    lastname: Joi.string().min(3).max(128),
     email: Joi.string().email().lowercase().min(3).max(255),
-    uuid: Joi.string().min(3).max(128),
     role: Joi.string().min(3).max(128),
     is_employed: Joi.boolean(),
     is_admin: Joi.boolean(),
@@ -235,36 +237,13 @@ const organizationValidation = async (req, res, next) => {
   }
 };
 
-// Validation for uuid parameters
-const uuidValidation = async (req, res, next) => {
-  /*
-  @desc     Schema for req.params.id
-  @method   GET, PUT, & DELETE
-*/
-  const uuidParam = Joi.string().uuid();
-  try {
-    const result = await uuidParam.validateAsync(req.params.id);
-    if (result) {
-      req.uuid = result;
-      next();
-    }
-  } catch (error) {
-    if (error.isJoi === true) {
-      error.status = 400;
-      res.status(error.status).json({ message: error.details[0].message });
-    } else {
-      res.status(500).json({ message: 'Unexpected error.' });
-    }
-  }
-};
-
 // Validation for id parameters
 const idValidation = async (req, res, next) => {
   /*
   @desc     Schema for req.params.id
   @method   GET, PUT, & DELETE
   */
-  const idParam = Joi.number().integer().min(1).max(10000);
+  const idParam = Joi.string().min(1).max(255);
   try {
     const result = await idParam.validateAsync(req.params.id);
     if (result) {
@@ -287,6 +266,5 @@ module.exports = {
   deviceValidation,
   requestValidation,
   organizationValidation,
-  uuidValidation,
   idValidation,
 };
