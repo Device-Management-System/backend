@@ -74,21 +74,16 @@ router.put(
       role: req.update.role,
       is_completed: true,
     };
+
     try {
       const foundUser = await userDB.findByID(req.userID);
-      if (foundUser && foundUser.is_admin) {
-        const usertoUpdate = await db.findByID(req.id);
-        if (usertoUpdate) {
-          const update = {
-            ...req.update,
-            is_completed: true,
-          };
-          const updatedUser = await db.update(req.id, update);
+      if (foundUser) {
+        if (userToUpdate) {
+          const updatedUser = await db.update(req.id, userToUpdate);
           res.status(201).json(updatedUser);
         } else {
           res.status(404).json({ message: 'The user is not found.' });
         }
-
       } else {
         res.status(404).json({ message: `User not found!` });
       }
