@@ -49,7 +49,8 @@ const userValidation = async (req, res, next) => {
   @method   PUT
   */
   const updateSchema = Joi.object().keys({
-    name: Joi.string().alphanum().min(3).max(255),
+    firstname: Joi.string().alphanum().min(3).max(128),
+    lastname: Joi.string().alphanum().min(3).max(128),
     email: Joi.string().email().lowercase().min(3).max(255),
     uuid: Joi.string().min(3).max(128),
     role: Joi.string().min(3).max(128),
@@ -264,7 +265,7 @@ const idValidation = async (req, res, next) => {
   @desc     Schema for req.params.id
   @method   GET, PUT, & DELETE
   */
-  const idParam = Joi.number().integer().min(1).max(10000);
+  const idParam = Joi.string().min(1).max(128);
   try {
     const result = await idParam.validateAsync(req.params.id);
     if (result) {

@@ -40,10 +40,10 @@ server.get('/', async (req, res) => {
 
 // server.use(jwtCheck);
 
+server.use('/api/auth', jwtCheck, authRouter);
 server.use('/api/users', jwtCheck, usersRouter);
 server.use('/api/devices', jwtCheck, devicesRouter);
 server.use('/api/requests', jwtCheck, requestsRouter);
 server.use('/api/organization', jwtCheck, organizationRouter);
-server.use('/api/auth', jwtCheck, authRouter);
 
 module.exports = server;

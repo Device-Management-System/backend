@@ -1,6 +1,8 @@
 exports.up = function (knex) {
   return knex.schema.createTable('users', (tbl) => {
-    tbl.text('id').primary();
+    tbl.text('id', 128).unique().primary();
+    tbl.varchar('firstname', 128);
+    tbl.varchar('lastname', 128);
     tbl.varchar('name', 128).notNullable();
     tbl.varchar('email', 100).notNullable().unique();
     tbl.varchar('role', 100);

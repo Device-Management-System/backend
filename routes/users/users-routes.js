@@ -25,6 +25,7 @@ router.get('/', tokenVerification, async (req, res) => {
       res.status(403).json({ message: 'Access denied!' });
     }
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ message: `Users request failed ${error.message}.` });
   }
 });
@@ -39,7 +40,7 @@ router.get('/:id', tokenVerification, idValidation, async (req, res) => {
   try {
     const foundUser = await userDB.findByID(req.userID);
     if ((foundUser && foundUser.is_admin) || foundUser.id === req.id) {
-      const user = await db.findById(req.id);
+      const user = await db.findByID(req.id);
       if (user) {
         res.status(200).json(user);
       } else {
@@ -70,9 +71,13 @@ router.put(
     try {
       const foundUser = await userDB.findByID(req.userID);
       if (foundUser && foundUser.is_admin) {
-        const usertoUpdate = await db.findById(req.id);
+        const usertoUpdate = await db.findByID(req.id);
         if (usertoUpdate) {
-          const updatedUser = await db.update(req.id, req.update);
+          const update = {
+            ...req.update,
+            is_completed: true,
+          };
+          const updatedUser = await db.update(req.id, update);
           res.status(201).json(updatedUser);
         } else {
           res.status(404).json({ message: 'The user is not found.' });
@@ -81,6 +86,7 @@ router.put(
         res.status(404).json({ message: `User not found!` });
       }
     } catch (error) {
+      console.log(error.message);
       res.status(500).json({ message: `User update failed ${error.message}.` });
     }
   }
