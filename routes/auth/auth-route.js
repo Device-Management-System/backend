@@ -10,35 +10,28 @@ const {
  * @desc
  * @route   POST /api/auth
  */
+router.post('/', restricted, async (req, res) => {
+  try {
+    const user = {
+      id: req.body.id,
+      email: req.body.email,
+      name: req.body.name,
+    };
+    if (user) {
+      const foundUser = await db.findUserByID(user.id);
+      if (foundUser) {
+        res.status(202).json(foundUser);
 
-router.post(
-  '/',
-  restricted,
-
-  async (req, res) => {
-    try {
-      const user = {
-        id: req.body.id,
-        email: req.body.email,
-      };
-      if (user) {
-        const foundUser = await db.findUserByID(user.id);
-        if (foundUser) {
-          res.status(202).json(foundUser);
-        } else {
-          const newUser = await db.addUser(user);
-          res.status(201).json(newUser);
-        }
       } else {
-        res.status(404).json('Error finding provided user ');
+        const newUser = await db.addUser(user);
+        res.status(201).json(newUser);
       }
-    } catch (error) {
-      console.log(error.message);
-      res
-        .status(500)
-        .json({ message: `Users request failed ${error.message}.` });
+    } else {
+      res.status(404).json('Error finding provided user ');
     }
+  } catch (error) {
+    res.status(500).json({ message: `Users request failed ${error.message}.` });
   }
-);
+});
 
 module.exports = router;
