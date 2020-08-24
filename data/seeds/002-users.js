@@ -2,7 +2,8 @@ exports.seed = async function (knex) {
   return knex('users').insert([
     {
       id: '40e6215d-b5c6-4896-987c-f30f3678f608',
-      name: 'John Smith',
+      first_name: 'John',
+      last_name: 'Smith',
       email: 'john.smith@gmail.com',
       role: 'software engineer',
       is_employed: true,
@@ -11,7 +12,8 @@ exports.seed = async function (knex) {
     },
     {
       id: '6ecd8c99-4036-403d-bf84-cf8400f67876',
-      name: 'Alex Green',
+      first_name: 'Alex',
+      last_name: 'Green',
       email: 'alex.green@gmail.com',
       role: 'senior software engineer',
       is_employed: true,
@@ -20,7 +22,8 @@ exports.seed = async function (knex) {
     },
     {
       id: '3f333df6-90a4-4fda-8dd3-9485d27cee96',
-      name: 'Ocean Andrews',
+      first_name: 'Ocean',
+      last_name: 'Smith',
       email: 'ocean.andrews@gmail.com',
       role: 'qa engineer',
       is_employed: true,
@@ -29,7 +32,8 @@ exports.seed = async function (knex) {
     },
     {
       id: '3f333df6-90a4-4fda-8dd3-9485d27cee16',
-      name: 'Loren Leigh',
+      first_name: 'Loren',
+      last_name: 'Leigh',
       email: 'loren.leigh@gmail.com',
       role: 'IT engineer',
       is_employed: true,

@@ -4,16 +4,12 @@ const orgDB = require('../organization/organization-model');
 const {
   tokenVerification: restricted,
 } = require('../../middlewares/restricted');
-// const {
-//   registerValidation,
-//   organizationValidation,
-// } = require('../../middlewares/validation');
+// const { registerValidation } = require('../../middlewares/validation');
 
 /*
  * @desc
  * @route   POST /api/auth
  */
-
 router.post('/', restricted, async (req, res) => {
   try {
     const user = {
@@ -25,6 +21,7 @@ router.post('/', restricted, async (req, res) => {
       const foundUser = await db.findUserByID(user.id);
       if (foundUser) {
         res.status(202).json(foundUser);
+
       } else {
         const newUser = await db.addUser(user);
         res.status(201).json(newUser);
