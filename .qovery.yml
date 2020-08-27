@@ -1,0 +1,14 @@
+application:
+  name: backend
+  project: landr
+  cloud_region: aws/us-east-2
+databases:
+- type: postgresql
+  version: "11"
+  name: my-postgresql
+routers:
+- name: main
+  routes:
+  - application_name: backend
+    paths:
+    - /
