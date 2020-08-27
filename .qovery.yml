@@ -3,12 +3,12 @@ application:
   project: landr
   cloud_region: aws/us-east-2
 databases:
-- type: postgresql
-  version: "11"
-  name: my-postgresql
+  - type: postgresql
+    version: '11'
+    name: DMS
 routers:
-- name: main
-  routes:
-  - application_name: backend
-    paths:
-    - /
+  - name: main
+    routes:
+      - application_name: backend
+        paths:
+          - /
