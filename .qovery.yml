@@ -4,7 +4,7 @@ application:
   cloud_region: aws/us-east-2
 databases:
   - type: postgresql
-    version: '11'
+    version: '12'
     name: DMS
 routers:
   - name: main
