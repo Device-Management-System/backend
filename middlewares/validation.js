@@ -50,7 +50,6 @@ const userValidation = async (req, res, next) => {
   @method   PUT
   */
   const updateSchema = Joi.object().keys({
-
     firstname: Joi.string().alphanum().min(3).max(128),
     lastname: Joi.string().alphanum().min(3).max(128),
     email: Joi.string().email().lowercase().min(3).max(255),
@@ -100,7 +99,7 @@ const deviceValidation = async (req, res, next) => {
     os: Joi.string().min(2).max(128).required(),
     brand: Joi.string().min(2).max(128).required(),
     is_active: Joi.boolean(),
-    user_id: Joi.number(),
+    user_id: Joi.string().trim().min(6).max(128).required(),
   });
 
   /*
@@ -113,7 +112,7 @@ const deviceValidation = async (req, res, next) => {
     os: Joi.string().min(2).max(128),
     brand: Joi.string().min(2).max(128),
     is_active: Joi.boolean(),
-    user_id: Joi.number(),
+    user_id: Joi.string().trim().min(6).max(128),
   });
 
   try {

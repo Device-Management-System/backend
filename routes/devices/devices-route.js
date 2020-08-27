@@ -20,9 +20,10 @@ const {
  * @access  Private, Admin
  */
 router.post('/', restricted, deviceValidation, async (req, res) => {
+  console.log(req.userID);
   try {
     const foundUser = await userDB.findByID(req.userID);
-    if (foundUser && foundUser.is_admin) {
+    if (foundUser) {
       const device = await db.add(req.device);
       res.status(201).json(device);
     } else {
@@ -41,7 +42,7 @@ router.post('/', restricted, deviceValidation, async (req, res) => {
 router.get('/', restricted, async (req, res) => {
   try {
     const foundUser = await userDB.findByID(req.userID);
-    if (foundUser && foundUser.is_admin) {
+    if (foundUser) {
       const devices = await db.findAll();
       res.status(200).json(devices);
     } else {
