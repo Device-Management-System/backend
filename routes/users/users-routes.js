@@ -18,9 +18,9 @@ const {
 router.get('/', tokenVerification, async (req, res) => {
   try {
     const foundUser = await userDB.findByID(req.userID);
-    if (foundUser && foundUser.is_admin) {
+    if (foundUser) {
       const allUsers = await db.findAll();
-      res.status(200).json({ allUsers });
+      res.status(200).json(allUsers);
     } else {
       res.status(403).json({ message: 'Access denied!' });
     }
