@@ -134,17 +134,19 @@ router.put(
         if (error) throw new Error(error);
       });
 
-      // const user = req.user;
+      const user = req.user;
 
-      // req.body.role === 'admin'
-      //   ? (user.is_admin = true)
-      //   : (user.is_admin = false);
+      req.body.role === 'admin'
+        ? (user.is_admin = true)
+        : (user.is_admin = false);
 
-      // const result = await db.update(req.user.id, user);
-
-      res.status(200).json({
-        message: `User's role was successfully updated!`,
-      });
+      const result = await db.update(req.user.id, user);
+      if (result) {
+        res.status(201).json({
+          message: `User's role was successfully updated!`,
+          user: result,
+        });
+      }
     } catch (error) {
       console.log(error);
       res
