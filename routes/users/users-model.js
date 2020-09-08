@@ -24,11 +24,8 @@ const add = async (newUser) => {
 };
 
 const update = async (id, infoToUpdate) => {
-  const editedUser = await db('users').where({ id }).update(infoToUpdate);
-  if (editedUser) {
-    const updatedUser = await findByID(id);
-    return updatedUser;
-  }
+  const user = await db('users').where('id', id).update(infoToUpdate);
+  return findByID(user.id);
 };
 
 const remove = async (id) => {
