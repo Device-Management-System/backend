@@ -186,8 +186,6 @@ router.delete(
         if (error) throw new Error(error);
       });
 
-      // console.log(statusCode);
-
       res.status(204).json({ message: `User's role was successfully removed` });
     } catch ({ err }) {
       res.status(500).json({ message: `Coul not remove current user's roles` });

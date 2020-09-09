@@ -41,5 +41,16 @@ exports.seed = async function (knex) {
       organization_id: 1,
       is_completed: true,
     },
+    {
+      id: '5f220d29da8ffa003d250046',
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'john@doe.com',
+      role: 'Developer',
+      is_employed: true,
+      is_admin: true,
+      organization_id: 1,
+      is_completed: true,
+    },
   ]);
 };

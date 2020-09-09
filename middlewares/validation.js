@@ -7,13 +7,16 @@ const registerValidation = async (req, res, next) => {
   @method   POST
   */
   const createSchma = Joi.object().keys({
-    name: Joi.string().min(3).max(30),
+    email: Joi.string().email().min(6).max(128).required(),
+    given_name: Joi.string().trim().min(3).max(128).required(),
+    family_given: Joi.string().trim().min(3).max(128).required(),
+    password: Joi.string().alphanum().min(6).required(),
   });
 
   try {
     const result = await createSchma.validate(req.body);
     if (result) {
-      req.name = req.body.name;
+      req.userInfo = result.value;
       next();
     }
   } catch ({ message }) {
