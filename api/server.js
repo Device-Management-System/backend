@@ -22,9 +22,8 @@ server.get('/', async (req, res) => {
   res.status(200).json({ api: 'server is working' });
 });
 
-server.use('/api/auth', jwtCheck, authRouter);
-server.use(getAPIAccessToken);
-server.use('/api/users', jwtCheck, usersRouter);
+server.use('/api/auth', getAPIAccessToken, authRouter);
+server.use('/api/users', getAPIAccessToken, jwtCheck, usersRouter);
 server.use('/api/devices', jwtCheck, devicesRouter);
 server.use('/api/requests', jwtCheck, requestsRouter);
 server.use('/api/organization', jwtCheck, organizationRouter);
